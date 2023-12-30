@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -17,7 +18,7 @@ class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      */
-    public function version(Request $request): string|null
+    public function version(Request $request): string | null
     {
         return parent::version($request);
     }
@@ -33,6 +34,16 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
+            ],
+            'flash' => collect(Arr::only($request->session()->all(), ['success', 'error', 'warning']))
+                ->mapWithKeys(function ($notification, $key) {
+                    return [
+                        'type' => $key,
+                        'body' => $notification,
+                    ];
+                }),
+            'response' => [
+                'result' => fn() => $request->session()->get('result'),
             ],
         ];
     }
