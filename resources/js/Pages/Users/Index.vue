@@ -1,8 +1,6 @@
 <template>
     <AuthenticatedLayout>
-        <div
-            class="overflow-x-aut relative h-screen p-20 shadow-md sm:rounded-lg"
-        >
+        <div class="overflow-x-aut relative h-screen shadow-md sm:rounded-lg">
             <section class="bg-white p-4 dark:bg-gray-900">
                 <div class="flex justify-end p-2">
                     <Link type="button">
