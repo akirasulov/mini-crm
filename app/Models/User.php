@@ -53,10 +53,11 @@ class User extends Authenticatable
         return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
     }
 
-    // public function getNameAttribute()
-    // {
-    //     return $this->name . ' ' . $this->surname;
-    // }
+    public function getFullNameAttribute()
+    {
+
+        return $this->name . ' ' . $this->surname;
+    }
 
     public function setPasswordAttribute($password)
     {

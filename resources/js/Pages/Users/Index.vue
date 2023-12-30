@@ -1,602 +1,223 @@
 <template>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <AuthenticatedLayout>
         <div
-            class="flex-column flex flex-wrap items-center justify-between space-y-4 bg-white py-4 md:flex-row md:space-y-0 dark:bg-gray-900"
+            class="overflow-x-aut relative h-screen p-20 shadow-md sm:rounded-lg"
         >
-            <div>
-                <button
-                    id="dropdownActionButton"
-                    data-dropdown-toggle="dropdownAction"
-                    class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
-                    type="button"
-                >
-                    <span class="sr-only">Action button</span>
-                    Action
-                    <svg
-                        class="ms-2.5 h-2.5 w-2.5"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 10 6"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="m1 1 4 4 4-4"
+            <section class="bg-white p-4 dark:bg-gray-900">
+                <div class="flex justify-end p-2">
+                    <Link type="button">
+                        <UserPlusIcon
+                            class="size-7 text-purple-600 dark:text-green-400"
                         />
-                    </svg>
-                </button>
-                <!-- Dropdown menu -->
+                    </Link>
+                </div>
                 <div
-                    id="dropdownAction"
-                    class="z-10 hidden w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:divide-gray-600 dark:bg-gray-700"
+                    class="flex-column flex flex-wrap items-center justify-between space-y-4 md:flex-row md:space-y-0"
                 >
-                    <ul
-                        class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                        aria-labelledby="dropdownActionButton"
-                    >
-                        <li>
-                            <a
-                                href="#"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                >Reward</a
-                            >
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                >Promote</a
-                            >
-                        </li>
-                        <li>
-                            <a
-                                href="#"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                                >Activate account</a
-                            >
-                        </li>
-                    </ul>
-                    <div class="py-1">
-                        <a
-                            href="#"
-                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-                            >Delete User</a
+                    <div>
+                        <label
+                            for="countries_disabled"
+                            class="block translate-y-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >Удалённые :</label
                         >
+                        <select
+                            id="underline_select"
+                            v-model="form.trashed"
+                            class="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400"
+                        >
+                            <option :value="null">По умолчанию</option>
+                            <option value="with">С удалёнными</option>
+                            <option value="only">Только удалённые</option>
+                        </select>
+                    </div>
+                    <label for="table-search" class="sr-only">Search</label>
+                    <div class="relative">
+                        <div
+                            class="rtl:inset-r-0 pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3"
+                        >
+                            <MagnifyingGlassIcon
+                                class="h-4 w-4 text-gray-500 dark:text-gray-400"
+                            />
+                        </div>
+                        <input
+                            type="text"
+                            v-model="form.search"
+                            id="table-search-users"
+                            class="block w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                            placeholder="Поиск пользователей"
+                        />
                     </div>
                 </div>
-            </div>
-            <label for="table-search" class="sr-only">Search</label>
-            <div class="relative">
-                <div
-                    class="rtl:inset-r-0 pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3"
-                >
-                    <svg
-                        class="h-4 w-4 text-gray-500 dark:text-gray-400"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 20"
-                    >
-                        <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                        />
-                    </svg>
-                </div>
-                <input
-                    type="text"
-                    id="table-search-users"
-                    class="block w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                    placeholder="Search for users"
-                />
-            </div>
-        </div>
-        <table
-            class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400"
-        >
-            <thead
-                class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400"
+            </section>
+            <!-- <table
+                class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400"
             >
-                <tr>
-                    <th scope="col" class="p-4">
-                        <div class="flex items-center">
-                            <input
-                                id="checkbox-all-search"
-                                type="checkbox"
-                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                            />
-                            <label for="checkbox-all-search" class="sr-only"
-                                >checkbox</label
-                            >
-                        </div>
-                    </th>
-                    <th scope="col" class="px-6 py-3">Name</th>
-                    <th scope="col" class="px-6 py-3">Position</th>
-                    <th scope="col" class="px-6 py-3">Status</th>
-                    <th scope="col" class="px-6 py-3">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                    class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                <thead
+                    class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400"
                 >
-                    <td class="w-4 p-4">
-                        <div class="flex items-center">
-                            <input
-                                id="checkbox-table-search-1"
-                                type="checkbox"
-                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                            />
-                            <label for="checkbox-table-search-1" class="sr-only"
-                                >checkbox</label
-                            >
-                        </div>
-                    </td>
-                    <th
-                        scope="row"
-                        class="flex items-center whitespace-nowrap px-6 py-4 text-gray-900 dark:text-white"
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Имя</th>
+                        <th scope="col" class="px-6 py-3">Логин</th>
+                        <th scope="col" class="px-6 py-3">Email</th>
+                        <th scope="col" class="px-6 py-3">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="(user, index) in users.data"
+                        :key="user.id"
+                        class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
                     >
-                        <img
-                            class="h-10 w-10 rounded-full"
-                            src="/docs/images/people/profile-picture-1.jpg"
-                            alt="Jese image"
-                        />
-                        <div class="ps-3">
-                            <div class="text-base font-semibold">Neil Sims</div>
-                            <div class="font-normal text-gray-500">
-                                neil.sims@flowbite.com
-                            </div>
-                        </div>
-                    </th>
-                    <td class="px-6 py-4">React Developer</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
+                        <td class="px-6 py-4">{{ user.fullname }}</td>
+                        <td class="px-6 py-4">{{ user.login }}</td>
+                        <td class="px-6 py-4">{{ user.email }}</td>
+                        <td class="flex items-center space-x-3 px-6 py-4">
+                            <Link
+                                :data-tooltip-target="`tooltip-edit-${index}`"
+                                :href="route('users.edit', user)"
+                                class="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                            >
+                                <PencilIcon class="size-4" />
+                            </Link>
                             <div
-                                class="me-2 h-2.5 w-2.5 rounded-full bg-green-500"
-                            ></div>
-                            Online
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <!-- Modal toggle -->
-                        <a
-                            href="#"
-                            type="button"
-                            data-modal-target="editUserModal"
-                            data-modal-show="editUserModal"
-                            class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                            >Edit user</a
-                        >
-                    </td>
-                </tr>
-                <tr
-                    class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                >
-                    <td class="w-4 p-4">
-                        <div class="flex items-center">
-                            <input
-                                id="checkbox-table-search-2"
-                                type="checkbox"
-                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                            />
-                            <label for="checkbox-table-search-2" class="sr-only"
-                                >checkbox</label
+                                :id="`tooltip-edit-${index}`"
+                                role="tooltip"
+                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
                             >
-                        </div>
-                    </td>
-                    <th
-                        scope="row"
-                        class="flex items-center whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                    >
-                        <img
-                            class="h-10 w-10 rounded-full"
-                            src="/docs/images/people/profile-picture-3.jpg"
-                            alt="Jese image"
-                        />
-                        <div class="ps-3">
-                            <div class="text-base font-semibold">
-                                Bonnie Green
+                                Изменить
+                                <div
+                                    class="tooltip-arrow"
+                                    data-popper-arrow
+                                ></div>
                             </div>
-                            <div class="font-normal text-gray-500">
-                                bonnie@flowbite.com
-                            </div>
-                        </div>
-                    </th>
-                    <td class="px-6 py-4">Designer</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
+                            <button
+                                @click.prevent="deleteUser(user.id)"
+                                :data-tooltip-target="`tooltip-delete-${index}`"
+                                type="button"
+                            >
+                                <UserMinusIcon class="size-4 text-red-600" />
+                            </button>
                             <div
-                                class="me-2 h-2.5 w-2.5 rounded-full bg-green-500"
-                            ></div>
-                            Online
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <!-- Modal toggle -->
-                        <a
-                            href="#"
-                            type="button"
-                            data-modal-show="editUserModal"
-                            class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                            >Edit user</a
-                        >
-                    </td>
-                </tr>
-                <tr
-                    class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                >
-                    <td class="w-4 p-4">
-                        <div class="flex items-center">
-                            <input
-                                id="checkbox-table-search-2"
-                                type="checkbox"
-                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
+                                :id="`tooltip-delete-${index}`"
+                                role="tooltip"
+                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
+                            >
+                                Удалить
+                                <div
+                                    class="tooltip-arrow"
+                                    data-popper-arrow
+                                ></div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+              
+            </table> -->
+
+            <ul role="list" class="divide-y divide-gray-100">
+                <li v-for="(user, index) in users.data" :key="user.id">
+                    <Link
+                        class="flex justify-between gap-x-6 px-2 py-5 hover:bg-gray-600"
+                        :href="route('users.edit', user)"
+                    >
+                        <div class="flex min-w-0 gap-x-4">
+                            <img
+                                class="h-12 w-12 flex-none rounded-full bg-gray-50"
+                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                alt=""
                             />
-                            <label for="checkbox-table-search-2" class="sr-only"
-                                >checkbox</label
-                            >
-                        </div>
-                    </td>
-                    <th
-                        scope="row"
-                        class="flex items-center whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                    >
-                        <img
-                            class="h-10 w-10 rounded-full"
-                            src="/docs/images/people/profile-picture-2.jpg"
-                            alt="Jese image"
-                        />
-                        <div class="ps-3">
-                            <div class="text-base font-semibold">Jese Leos</div>
-                            <div class="font-normal text-gray-500">
-                                jese@flowbite.com
+                            <div class="min-w-0 flex-auto">
+                                <p
+                                    class="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200"
+                                >
+                                    {{ user.fullname }}
+                                </p>
+                                <p
+                                    class="mt-1 truncate text-xs leading-5 text-gray-500"
+                                >
+                                    {{ user.email }}
+                                </p>
                             </div>
                         </div>
-                    </th>
-                    <td class="px-6 py-4">Vue JS Developer</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
+                        <div
+                            class="hidden shrink-0 sm:flex sm:flex-col sm:items-end"
+                        >
+                            <p
+                                class="text-sm leading-6 text-gray-900 dark:text-gray-200"
+                            >
+                                {{ user.login }}
+                            </p>
+                            <p
+                                v-if="user.id != $page.props.auth.user.id"
+                                class="mt-1 text-xs leading-5 text-gray-500"
+                            >
+                                Заходил (а)
+                                <time :datetime="user.last_seen">{{
+                                    user.last_seen
+                                }}</time>
+                            </p>
+
                             <div
-                                class="me-2 h-2.5 w-2.5 rounded-full bg-green-500"
-                            ></div>
-                            Online
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <!-- Modal toggle -->
-                        <a
-                            href="#"
-                            type="button"
-                            data-modal-show="editUserModal"
-                            class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                            >Edit user</a
-                        >
-                    </td>
-                </tr>
-                <tr
-                    class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                >
-                    <td class="w-4 p-4">
-                        <div class="flex items-center">
-                            <input
-                                id="checkbox-table-search-2"
-                                type="checkbox"
-                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                            />
-                            <label for="checkbox-table-search-2" class="sr-only"
-                                >checkbox</label
+                                v-else
+                                class="mt-1 flex items-center gap-x-1.5"
                             >
-                        </div>
-                    </td>
-                    <th
-                        scope="row"
-                        class="flex items-center whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                    >
-                        <img
-                            class="h-10 w-10 rounded-full"
-                            src="/docs/images/people/profile-picture-5.jpg"
-                            alt="Jese image"
-                        />
-                        <div class="ps-3">
-                            <div class="text-base font-semibold">
-                                Thomas Lean
-                            </div>
-                            <div class="font-normal text-gray-500">
-                                thomes@flowbite.com
+                                <div
+                                    class="flex-none rounded-full bg-emerald-500/20 p-1"
+                                >
+                                    <div
+                                        class="h-1.5 w-1.5 rounded-full bg-emerald-500"
+                                    />
+                                </div>
+                                <p class="text-xs leading-5 text-gray-500">
+                                    Онлайн
+                                </p>
                             </div>
                         </div>
-                    </th>
-                    <td class="px-6 py-4">UI/UX Engineer</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
-                            <div
-                                class="me-2 h-2.5 w-2.5 rounded-full bg-green-500"
-                            ></div>
-                            Online
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <!-- Modal toggle -->
-                        <a
-                            href="#"
-                            type="button"
-                            data-modal-show="editUserModal"
-                            class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                            >Edit user</a
-                        >
-                    </td>
-                </tr>
-                <tr
-                    class="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600"
-                >
-                    <td class="w-4 p-4">
-                        <div class="flex items-center">
-                            <input
-                                id="checkbox-table-search-3"
-                                type="checkbox"
-                                class="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-800"
-                            />
-                            <label for="checkbox-table-search-3" class="sr-only"
-                                >checkbox</label
-                            >
-                        </div>
-                    </td>
-                    <th
-                        scope="row"
-                        class="flex items-center whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                    >
-                        <img
-                            class="h-10 w-10 rounded-full"
-                            src="/docs/images/people/profile-picture-4.jpg"
-                            alt="Jese image"
-                        />
-                        <div class="ps-3">
-                            <div class="text-base font-semibold">
-                                Leslie Livingston
-                            </div>
-                            <div class="font-normal text-gray-500">
-                                leslie@flowbite.com
-                            </div>
-                        </div>
-                    </th>
-                    <td class="px-6 py-4">SEO Specialist</td>
-                    <td class="px-6 py-4">
-                        <div class="flex items-center">
-                            <div
-                                class="me-2 h-2.5 w-2.5 rounded-full bg-red-500"
-                            ></div>
-                            Offline
-                        </div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <!-- Modal toggle -->
-                        <a
-                            href="#"
-                            type="button"
-                            data-modal-show="editUserModal"
-                            class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                            >Edit user</a
-                        >
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <!-- Edit user modal -->
-        <div
-            id="editUserModal"
-            tabindex="-1"
-            aria-hidden="true"
-            class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 md:inset-0"
-        >
-            <div class="relative max-h-full w-full max-w-2xl">
-                <!-- Modal content -->
-                <form
-                    class="relative rounded-lg bg-white shadow dark:bg-gray-700"
-                >
-                    <!-- Modal header -->
-                    <div
-                        class="flex items-start justify-between rounded-t border-b p-4 dark:border-gray-600"
-                    >
-                        <h3
-                            class="text-xl font-semibold text-gray-900 dark:text-white"
-                        >
-                            Edit user
-                        </h3>
-                        <button
-                            type="button"
-                            class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-hide="editUserModal"
-                        >
-                            <svg
-                                class="h-3 w-3"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 14 14"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-                                />
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <div class="space-y-6 p-6">
-                        <div class="grid grid-cols-6 gap-6">
-                            <div class="col-span-6 sm:col-span-3">
-                                <label
-                                    for="first-name"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                                    >First Name</label
-                                >
-                                <input
-                                    type="text"
-                                    name="first-name"
-                                    id="first-name"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="Bonnie"
-                                    required=""
-                                />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label
-                                    for="last-name"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                                    >Last Name</label
-                                >
-                                <input
-                                    type="text"
-                                    name="last-name"
-                                    id="last-name"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="Green"
-                                    required=""
-                                />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label
-                                    for="email"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                                    >Email</label
-                                >
-                                <input
-                                    type="email"
-                                    name="email"
-                                    id="email"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="example@company.com"
-                                    required=""
-                                />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label
-                                    for="phone-number"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                                    >Phone Number</label
-                                >
-                                <input
-                                    type="number"
-                                    name="phone-number"
-                                    id="phone-number"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="e.g. +(12)3456 789"
-                                    required=""
-                                />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label
-                                    for="department"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                                    >Department</label
-                                >
-                                <input
-                                    type="text"
-                                    name="department"
-                                    id="department"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="Development"
-                                    required=""
-                                />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label
-                                    for="company"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                                    >Company</label
-                                >
-                                <input
-                                    type="number"
-                                    name="company"
-                                    id="company"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="123456"
-                                    required=""
-                                />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label
-                                    for="current-password"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                                    >Current Password</label
-                                >
-                                <input
-                                    type="password"
-                                    name="current-password"
-                                    id="current-password"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="••••••••"
-                                    required=""
-                                />
-                            </div>
-                            <div class="col-span-6 sm:col-span-3">
-                                <label
-                                    for="new-password"
-                                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                                    >New Password</label
-                                >
-                                <input
-                                    type="password"
-                                    name="new-password"
-                                    id="new-password"
-                                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                                    placeholder="••••••••"
-                                    required=""
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Modal footer -->
-                    <div
-                        class="flex items-center space-x-3 rounded-b border-t border-gray-200 p-6 rtl:space-x-reverse dark:border-gray-600"
-                    >
-                        <button
-                            type="submit"
-                            class="rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                            Save all
-                        </button>
-                    </div>
-                </form>
-            </div>
+                    </Link>
+                </li>
+            </ul>
+            <Pagination :links="users.links" />
         </div>
-    </div>
+    </AuthenticatedLayout>
 </template>
 
 <script setup>
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import Pagination from "@/Components/Pagination.vue";
 import pickBy from "lodash/pickBy";
-import throttle from "lodash/throttle";
 import mapValues from "lodash/mapValues";
 import { watch } from "vue";
-const props = defineProps({ filters: Object, users: Array });
-const form = {
+import { router, useForm } from "@inertiajs/vue3";
+import debounce from "lodash/debounce";
+import {
+    MagnifyingGlassIcon,
+    PencilIcon,
+    UserMinusIcon,
+    UserPlusIcon,
+} from "@heroicons/vue/24/solid";
+const props = defineProps({ filters: Object, users: Object });
+let form = useForm({
     search: props.filters.search,
     trashed: props.filters.trashed,
-};
+});
 
 watch(
-    () => form,
-    () => {
-        throttle(function () {
-            this.$inertia.get("/users", pickBy(form), {
-                preserveState: true,
-            });
-        }, 150);
-    },
-    { deep: true },
+    form,
+    debounce(function (value) {
+        router.get("/users", pickBy(form), {
+            preserveState: true,
+            replace: true,
+        });
+    }, 150),
 );
-
 const reset = () => {
     form = mapValues(form, () => null);
+};
+
+const deleteUser = (id) => {
+    router.delete(route("users.destroy", { id: id }), {
+        preserveScroll: true,
+    });
 };
 </script>
