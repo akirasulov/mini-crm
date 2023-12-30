@@ -10,13 +10,13 @@ const toggleDark = useToggle(isDark);
     <button type="button" @click.prevent="toggleDark()">
         <MoonIcon
             v-if="!isDark"
-            class="size-6"
-            :class="{ 'text-gray-800': !isDark }"
+            class="size-7"
+            :class="{ 'text-gray-600': !isDark }"
         />
         <SunIcon
             v-if="isDark"
-            class="size-6"
-            :class="{ 'text-white': isDark }"
+            class="size-7"
+            :class="{ 'text-yellow-300': isDark }"
         />
     </button>
 </template>
