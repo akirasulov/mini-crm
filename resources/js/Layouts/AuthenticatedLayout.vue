@@ -3,6 +3,8 @@ import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
 import { UsersIcon } from "@heroicons/vue/24/solid";
 import SideBar from "@/Components/SideBar.vue";
+import ThemeToogle from "@/Components/ThemeToogle.vue";
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 onMounted(() => {
     initFlowbite();
 });
@@ -45,19 +47,12 @@ const navigation = [
                             ></path>
                         </svg>
                     </button>
-                    <a href="https://flowbite.com" class="ms-2 flex md:me-24">
-                        <img
-                            src="https://flowbite.com/docs/images/logo.svg"
-                            class="me-3 h-8"
-                            alt="FlowBite Logo"
-                        />
-                        <span
-                            class="self-center whitespace-nowrap text-xl font-semibold sm:text-2xl dark:text-white"
-                            >Flowbite</span
-                        >
-                    </a>
+                    <Link :href="route('dashboard')" class="ms-2 flex md:me-24">
+                        <ApplicationLogo />
+                    </Link>
                 </div>
                 <div class="flex items-center">
+                    <ThemeToogle />
                     <div class="ms-3 flex items-center">
                         <div>
                             <button
@@ -97,7 +92,7 @@ const navigation = [
                                 <li>
                                     <Link
                                         :href="route('profile.edit')"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem"
                                         >Аккаунт</Link
                                     >
@@ -107,7 +102,7 @@ const navigation = [
                                         :href="route('logout')"
                                         method="post"
                                         as="button"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        class="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem"
                                         >Выход</Link
                                     >
@@ -122,7 +117,7 @@ const navigation = [
 
     <SideBar :navigation="navigation" />
 
-    <div class="p-4 sm:ml-64">
+    <main class="bg-white px-4 py-20 sm:ml-64 dark:bg-gray-800">
         <slot />
-    </div>
+    </main>
 </template>
