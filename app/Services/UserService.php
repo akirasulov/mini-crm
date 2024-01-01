@@ -44,7 +44,7 @@ class UserService
         ];
     }
 
-    public function store(UserStoreRequest $request)
+    public function store(UserStoreRequest $request): void
     {
         $user = User::create($request->only('name', 'surname', 'login', 'password', 'email'));
 
@@ -66,7 +66,7 @@ class UserService
         ];
     }
 
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(UserUpdateRequest $request, User $user): void
     {
 
         if ($request->password) {
@@ -80,7 +80,7 @@ class UserService
         $user->update($request->only('name', 'surname', 'login', 'email'));
     }
 
-    public function updateAvatar(UpdateAvatarRequest $request, User $user)
+    public function updateAvatar(UpdateAvatarRequest $request, User $user): void
     {
 
         if ($user->profile_photo_path) {
@@ -93,17 +93,17 @@ class UserService
 
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user): void
     {
         $user->delete();
     }
 
-    public function restore(User $user)
+    public function restore(User $user): void
     {
         $user->restore();
     }
 
-    public function assignRole(User $user)
+    public function assignRole(User $user): void
     {
         request()->validate(['role_name' => 'required']);
 
@@ -129,7 +129,7 @@ class UserService
         }
     }
 
-    public function assignPermission(User $user)
+    public function assignPermission(User $user): void
     {
         request()->validate(['permission_name' => 'required']);
 
