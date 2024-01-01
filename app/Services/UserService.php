@@ -8,6 +8,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -30,6 +31,7 @@ class UserService
                     'profile_photo_path' => $user->hasMedia('images') ? $user->getMedia('images')->first()->getFullUrl() : false,
                     'last_seen' => $user->updated_at->diffForHumans(),
                     'deleted_at' => $user->deleted_at,
+                    'is_online' => Cache::has('user-online' . $user->id),
                 ]),
         ];
     }

@@ -88,7 +88,7 @@
                                 {{ user.login }}
                             </p>
                             <p
-                                v-if="user.id != $page.props.auth.user.id"
+                                v-if="!user.is_online"
                                 class="mt-1 text-xs leading-5 text-gray-500"
                             >
                                 Заходил (а)
