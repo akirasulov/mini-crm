@@ -4,7 +4,6 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,14 +12,15 @@ Route::get('/', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/permission', [PermissionController::class, 'index'])->name('permission.index');
-    Route::get('/permission/sync', [PermissionController::class, 'sync'])->name('permission.sync');
-    Route::post('/permission/assign', [PermissionController::class, 'assign'])->name('permission.assign');
-    Route::post('/permission/remove', [PermissionController::class, 'remove'])->name('permission.remove');
-    Route::get('/permission/create', [PermissionController::class, 'create'])->name('permission.create');
-    Route::post('/permission/store', [PermissionController::class, 'storePermission'])->name('permission.store');
-    Route::post('/role/store', [PermissionController::class, 'storeRole'])->name('role.store');
-    Route::post('/role/destroy', [RoleController::class, 'destroy'])->name('role.destroy');
+
+    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissios.index');
+    Route::post('/permission/assign', [PermissionController::class, 'assign'])->name('permissios.assign');
+    Route::post('/permission/remove', [PermissionController::class, 'remove'])->name('permissios.remove');
+    Route::get('/permission/create', [PermissionController::class, 'create'])->name('permissios.create');
+    Route::post('/permission/store', [PermissionController::class, 'storePermission'])->name('permissios.store');
+
+    Route::post('/role/store', [PermissionController::class, 'storeRole'])->name('roles.store');
+    Route::post('/role/destroy', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

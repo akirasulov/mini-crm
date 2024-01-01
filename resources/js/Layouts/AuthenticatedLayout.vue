@@ -1,7 +1,11 @@
 <script setup>
 import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
-import { UsersIcon, UserCircleIcon } from "@heroicons/vue/24/solid";
+import {
+    UsersIcon,
+    UserCircleIcon,
+    LockClosedIcon,
+} from "@heroicons/vue/24/solid";
 
 import SideBar from "@/Components/SideBar.vue";
 import ThemeToogle from "@/Components/ThemeToogle.vue";
@@ -17,6 +21,11 @@ const navigation = [
         route: "users.index",
         icon: UsersIcon,
         name: "Пользователи",
+    },
+    {
+        route: "permissios.index",
+        icon: LockClosedIcon,
+        name: "Роли и разрешения",
     },
 ];
 </script>

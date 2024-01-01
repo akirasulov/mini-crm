@@ -1,4 +1,5 @@
 <template>
+     <Head title="Пользователи" />
     <AuthenticatedLayout>
         <div class="relative shadow-md sm:rounded-lg">
             <section class="h-full bg-white p-4 dark:bg-gray-900">

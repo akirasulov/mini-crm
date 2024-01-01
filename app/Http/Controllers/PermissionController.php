@@ -7,14 +7,18 @@ use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
+
     public function index()
     {
-        return inertia()->render('Admin/RoleAndPermission/Index', []);
+        return inertia()->render('Admin/RoleAndPermission/Index', [
+            'roles' => Role::with('permissions')->get(),
+            'permissions' => Permission::all(),
+        ]);
     }
 
     public function create()
     {
-        return inertia()->render('Admin/RoleAndPermission/Create', []);
+        return inertia()->render('Admin/RoleAndPermission/Create');
     }
 
     public function storeRole()
@@ -24,15 +28,6 @@ class PermissionController extends Controller
         ]);
 
         Role::create(['name' => request('name')]);
-    }
-
-    public function sync()
-    {
-        return inertia()->render('Admin/RoleAndPermission/Sync', [
-            'roles' => Role::with('permissions')->get(),
-            'permissions' => Permission::all(),
-        ]);
-
     }
 
     public function remove()
