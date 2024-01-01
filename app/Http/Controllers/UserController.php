@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class UserController extends Controller
         return inertia()->render('Users/Index', [
             'filters' => $request->all(),
             'users' => User::query()
-                ->withTrashed()
+            // ->withTrashed()
                 ->orderByName()
                 ->filter($request->only('search', 'trashed'))
                 ->paginate(10)
@@ -45,11 +46,22 @@ class UserController extends Controller
     }
 
     public function store(UserStoreRequest $request)
-    {}
+    {
+        ;
+        $user = User::create($request->only('name', 'surname', 'login', 'password', 'email'));
+
+        if (!empty($request->roles)) {
+            $user->syncRoles($request->roles);
+        }
+
+        if (!empty($request->permissions)) {
+            $user->syncPermissions($request->permissions);
+        }
+        return back()->with('success', 'Успешно!');
+    }
 
     public function edit(User $user)
     {
-
         return inertia()->render('Users/Edit', [
             'user' => UserResource::make($user->load('roles', 'permissions')),
             'roles' => Role::all(),
@@ -57,20 +69,32 @@ class UserController extends Controller
         ]);
     }
 
-    public function update()
-    {}
+    public function update(UserUpdateRequest $request, User $user)
+    {
+        if ($request->password) {
+            $user->update(['password' => $request->password]);
+        }
 
-    public function destroy(User $user): void
+        $user->update($request->only('name', 'surname', 'login', 'email'));
+
+        return back()->with('success', 'Успешно!');
+    }
+
+    public function destroy(User $user)
     {
         $user->delete();
+        return redirect()->route('users.index')->with('success', 'Успешно!');
     }
 
     public function restore(User $user)
-    {}
+    {
+        $user->restore();
+
+        return back()->with('success', 'Успешно!');
+    }
 
     public function assignRole(User $user)
     {
-
         request()->validate(['role_name' => 'required']);
 
         if (request('checked')) {
@@ -78,7 +102,7 @@ class UserController extends Controller
         } else {
             $user->removeRole(request('role_name'));
         }
-
+        return back()->with('success', 'Успешно!');
     }
 
     public function assignPermission(User $user)

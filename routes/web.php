@@ -26,8 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
     Route::get('/users/edit/{user:id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::post('/users/role/{user:id}', [UserController::class, 'assignRole'])->name('users.role');
+    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
     Route::post('/users/permission/{user:id}', [UserController::class, 'assignPermission'])->name('users.permission');
+    Route::patch('/users/update/{user:id}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/destroy/{user:id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

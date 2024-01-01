@@ -4,6 +4,7 @@ import ThemeToogle from "@/Components/ThemeToogle.vue";
 
 <template>
     <ThemeToogle class="absolute right-10 top-10" />
+
     <main>
         <slot />
     </main>

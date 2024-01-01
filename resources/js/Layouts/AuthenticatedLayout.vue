@@ -8,7 +8,9 @@ import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 onMounted(() => {
     initFlowbite();
 });
-
+defineOptions({
+    inheritAttrs: false,
+});
 const navigation = [
     {
         route: "users.index",
@@ -117,7 +119,7 @@ const navigation = [
 
     <SideBar :navigation="navigation" />
 
-    <main class="bg-white px-4 py-20 sm:ml-64 dark:bg-gray-800">
+    <main v-bind="$attrs" class="bg-white px-4 pt-20 sm:ml-64 dark:bg-gray-800">
         <slot />
     </main>
 </template>

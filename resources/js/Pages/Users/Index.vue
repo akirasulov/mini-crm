@@ -1,9 +1,9 @@
 <template>
     <AuthenticatedLayout>
-        <div class="overflow-x-aut relative h-screen shadow-md sm:rounded-lg">
-            <section class="bg-white p-4 dark:bg-gray-900">
+        <div class="relative shadow-md sm:rounded-lg">
+            <section class="h-full bg-white p-4 dark:bg-gray-900">
                 <div class="flex justify-end p-2">
-                    <Link type="button">
+                    <Link :href="route('admin.user.create')">
                         <UserPlusIcon
                             class="size-7 text-purple-600 dark:text-green-400"
                         />
@@ -23,9 +23,9 @@
                             v-model="form.trashed"
                             class="peer block w-full appearance-none border-0 border-b-2 border-gray-200 bg-transparent px-0 py-2.5 text-sm text-gray-500 focus:border-gray-200 focus:outline-none focus:ring-0 dark:border-gray-700 dark:text-gray-400"
                         >
-                            <option :value="null">По умолчанию</option>
-                            <option value="with">С удалёнными</option>
-                            <option value="only">Только удалённые</option>
+                            <option :value="null">Активные</option>
+                            <option value="with">Все</option>
+                            <option value="only">Удалённые</option>
                         </select>
                     </div>
                     <label for="table-search" class="sr-only">Search</label>
@@ -47,71 +47,6 @@
                     </div>
                 </div>
             </section>
-            <!-- <table
-                class="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-400"
-            >
-                <thead
-                    class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400"
-                >
-                    <tr>
-                        <th scope="col" class="px-6 py-3">Имя</th>
-                        <th scope="col" class="px-6 py-3">Логин</th>
-                        <th scope="col" class="px-6 py-3">Email</th>
-                        <th scope="col" class="px-6 py-3">Действия</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        v-for="(user, index) in users.data"
-                        :key="user.id"
-                        class="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-                    >
-                        <td class="px-6 py-4">{{ user.fullname }}</td>
-                        <td class="px-6 py-4">{{ user.login }}</td>
-                        <td class="px-6 py-4">{{ user.email }}</td>
-                        <td class="flex items-center space-x-3 px-6 py-4">
-                            <Link
-                                :data-tooltip-target="`tooltip-edit-${index}`"
-                                :href="route('users.edit', user)"
-                                class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                            >
-                                <PencilIcon class="size-4" />
-                            </Link>
-                            <div
-                                :id="`tooltip-edit-${index}`"
-                                role="tooltip"
-                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
-                            >
-                                Изменить
-                                <div
-                                    class="tooltip-arrow"
-                                    data-popper-arrow
-                                ></div>
-                            </div>
-                            <button
-                                @click.prevent="deleteUser(user.id)"
-                                :data-tooltip-target="`tooltip-delete-${index}`"
-                                type="button"
-                            >
-                                <UserMinusIcon class="size-4 text-red-600" />
-                            </button>
-                            <div
-                                :id="`tooltip-delete-${index}`"
-                                role="tooltip"
-                                class="tooltip invisible absolute z-10 inline-block rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white opacity-0 shadow-sm transition-opacity duration-300 dark:bg-gray-700"
-                            >
-                                Удалить
-                                <div
-                                    class="tooltip-arrow"
-                                    data-popper-arrow
-                                ></div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-
-              
-            </table> -->
 
             <ul role="list" class="divide-y divide-gray-100">
                 <li v-for="(user, index) in users.data" :key="user.id">
@@ -175,7 +110,7 @@
                     </Link>
                 </li>
             </ul>
-            <Pagination :links="users.links" />
+            <Pagination class="py-4" :links="users.links" />
         </div>
     </AuthenticatedLayout>
 </template>
