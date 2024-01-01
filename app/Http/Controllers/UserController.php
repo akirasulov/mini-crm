@@ -68,6 +68,11 @@ class UserController extends Controller
 
     public function assignRole(User $user)
     {
+        $userRoles = $user->getRoleNames();
+        if (count($userRoles) >= 1) {
+            return back()->with('warning', 'У пользователя может быть только одна роль!');
+        }
+
         $this->userService->assignRole($user);
 
         return back()->with('success', 'Успешно!');

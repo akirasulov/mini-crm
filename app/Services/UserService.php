@@ -108,8 +108,23 @@ class UserService
         request()->validate(['role_name' => 'required']);
 
         if (request('checked')) {
+
+            // Присваиваем роль пользователю
             $user->assignRole(request('role_name'));
+            // Получить все роли пользователя
+
+            $roles = $user->roles;
+            // Получить все permissions, синхронизированные с ролями
+            $permissions = $roles->pluck('permissions');
+            // Присвоить разрешения пользователю
+            $user->givePermissionTo($permissions);
         } else {
+            // Получить все permissions пользователя
+            $permissions = $user->permissions;
+            // Удалить все permissions
+            foreach ($permissions as $permission) {
+                $user->revokePermissionTo(request($permission->name));
+            }
             $user->removeRole(request('role_name'));
         }
     }

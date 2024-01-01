@@ -24,8 +24,8 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'profile_photo_path' => $this->hasMedia('images') ? $this->getMedia('images')->first()->getFullUrl() : false,
             'deleted_at' => $this->deleted_at,
-            'roles' => $this->getRoleNames(),
-            'permissions' => $this->getAllPermissions()->pluck('name'),
+            'roles' => $this->roles,
+            'permissions' => $this->permissions,
         ];
     }
 }

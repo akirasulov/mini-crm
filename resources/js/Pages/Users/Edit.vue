@@ -1,4 +1,5 @@
 <template>
+    <Head :title="user.fullname" />
     <AuthenticatedLayout>
         <form @submit.prevent="submit">
             <h2

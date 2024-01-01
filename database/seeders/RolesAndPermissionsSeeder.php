@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -28,19 +30,79 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'create role and permission']);
 
         //Клиент может создавать обращения
-        $role = Role::create(['name' => 'client'])
+        $client = Role::create(['name' => 'client'])
             ->givePermissionTo(['create post']);
 
         //Оператор может создавать/изменять обращения и просматривать клиентов
-        $role = Role::create(['name' => 'opeator'])
+        $opeator = Role::create(['name' => 'opeator'])
             ->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
 
         //Специалист back-office может создавать/изменять обращения и просматривать клиентов
-        $role = Role::create(['name' => 'back-office'])
+        $back_office = Role::create(['name' => 'back-office'])
             ->givePermissionTo(['create post', 'update post', 'view post', 'create user', 'update user', 'view user', 'leave commemt', 'grant a role', 'create role and permission']);
 
         //Администратору доступен весъ функционал
-        $role = Role::create(['name' => 'admin']);
-        $role->givePermissionTo(Permission::all());
+        $admin = Role::create(['name' => 'admin'])->givePermissionTo(Permission::all());
+
+        User::factory(40)->create()->each(function ($user) use ($client) {
+            $user->assignRole($client);
+            $user->givePermissionTo(['create post']);
+        });
+
+        User::factory(40)->create()->each(function ($user) use ($client) {
+            $user->assignRole($client);
+            $user->givePermissionTo(['create post']);
+            $user->deleted_at = now();
+            $user->save();
+        });
+
+        User::factory(20)->create()->each(function ($user) use ($opeator) {
+            $user->assignRole($opeator);
+            $user->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
+        });
+
+        User::factory(20)->create()->each(function ($user) use ($opeator) {
+            $user->assignRole($opeator);
+            $user->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
+            $user->deleted_at = now();
+            $user->save();
+        });
+
+        User::factory(10)->create()->each(function ($user) use ($back_office) {
+            $user->assignRole($back_office);
+            $user->givePermissionTo(['create post', 'update post', 'view post', 'create user', 'update user', 'view user', 'leave commemt', 'grant a role', 'create role and permission']);
+        });
+
+        User::factory(10)->create()->each(function ($user) use ($back_office) {
+            $user->assignRole($back_office);
+            $user->givePermissionTo(['create post', 'update post', 'view post', 'create user', 'update user', 'view user', 'leave commemt', 'grant a role', 'create role and permission']);
+            $user->deleted_at = now();
+            $user->save();
+        });
+
+        User::factory(3)->create()->each(function ($user) use ($admin) {
+            $user->assignRole($admin);
+            $user->givePermissionTo(Permission::all());
+            $user->deleted_at = now();
+            $user->save();
+        });
+
+        User::factory(3)->create()->each(function ($user) use ($admin) {
+            $user->assignRole($admin);
+            $user->givePermissionTo(Permission::all());
+        });
+
+        $customUser = User::factory()->create([
+            'name' => 'Akmal',
+            'surname' => 'Rasulov',
+            'email' => 'akirasulov2323@gmail.com',
+            'login' => 'akirasulov',
+            'password' => '$2a$12$0ePC4wYJ4ChHQzE47Srzo.JvM9J8Ee.8fuaJl5dtW.8JIMOgptcNe',
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'profile_photo_path' => null,
+        ]);
+        $customUser->assignRole($admin);
+        $customUser->givePermissionTo(Permission::all());
     }
 }
