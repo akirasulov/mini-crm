@@ -89,7 +89,10 @@
                             v-model="form.password"
                         />
 
-                        <InputError :message="form.errors.email" class="mt-2" />
+                        <InputError
+                            :message="form.errors.password"
+                            class="mt-2"
+                        />
                     </div>
                     <div
                         class="col-span-full flex items-center justify-end gap-x-6"
@@ -315,6 +318,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Modal from "@/Components/Modal.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import TrashedMessage from "@/Shared/TrashedMessage.vue";
 import { ref } from "vue";
@@ -325,13 +329,7 @@ const props = defineProps({
     flash: Object,
 });
 
-const form = useForm({
-    name: props.user.name,
-    surname: props.user.surname,
-    login: props.user.login,
-    email: props.user.email,
-    password: props.user.password,
-});
+const form = useForm(props.user);
 const changeRole = (target) => {
     router.post(
         route("users.role", { id: props.user.id }),

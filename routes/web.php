@@ -22,9 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/role/store', [PermissionController::class, 'storeRole'])->name('role.store');
     Route::post('/role/destroy', [RoleController::class, 'destroy'])->name('role.destroy');
 
-    Route::get('/create/user', [AdminController::class, 'create'])->name('admin.user.create');
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
+    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::get('/users/edit/{user:id}', [UserController::class, 'edit'])->name('users.edit');
     Route::put('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::post('/users/role/{user:id}', [UserController::class, 'assignRole'])->name('users.role');

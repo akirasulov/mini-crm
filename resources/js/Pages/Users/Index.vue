@@ -3,7 +3,7 @@
         <div class="relative shadow-md sm:rounded-lg">
             <section class="h-full bg-white p-4 dark:bg-gray-900">
                 <div class="flex justify-end p-2">
-                    <Link :href="route('admin.user.create')">
+                    <Link :href="route('users.create')">
                         <UserPlusIcon
                             class="size-7 text-purple-600 dark:text-green-400"
                         />

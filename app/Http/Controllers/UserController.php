@@ -19,11 +19,9 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-
         return inertia()->render('Users/Index', [
             'filters' => $request->all(),
             'users' => User::query()
-            // ->withTrashed()
                 ->orderByName()
                 ->filter($request->only('search', 'trashed'))
                 ->paginate(10)
@@ -42,7 +40,11 @@ class UserController extends Controller
 
     public function create()
     {
-        return inertia()->render('Users/Create');
+        return inertia()->render('Users/Create', [
+            'roles' => Role::all(),
+            'permissions' => Permission::all(),
+
+        ]);
     }
 
     public function store(UserStoreRequest $request)
@@ -57,7 +59,7 @@ class UserController extends Controller
         if (!empty($request->permissions)) {
             $user->syncPermissions($request->permissions);
         }
-        return back()->with('success', 'Успешно!');
+        return redirect()->route('users.index')->with('success', 'Успешно!');
     }
 
     public function edit(User $user)
