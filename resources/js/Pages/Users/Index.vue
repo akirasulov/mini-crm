@@ -56,9 +56,15 @@
                     >
                         <div class="flex min-w-0 gap-x-4">
                             <img
+                                v-if="user.profile_photo_path"
                                 class="h-12 w-12 flex-none rounded-full bg-gray-50"
-                                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                alt=""
+                                :src="user.profile_photo_path"
+                                :alt="user.fullname"
+                            />
+                            <UserCircleIcon
+                                v-else
+                                class="h-12 w-12 text-gray-300"
+                                aria-hidden="true"
                             />
                             <div class="min-w-0 flex-auto">
                                 <p
@@ -119,7 +125,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Pagination from "@/Components/Pagination.vue";
 import pickBy from "lodash/pickBy";
-import mapValues from "lodash/mapValues";
 import { watch } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 import debounce from "lodash/debounce";
@@ -128,6 +133,7 @@ import {
     PencilIcon,
     UserMinusIcon,
     UserPlusIcon,
+    UserCircleIcon,
 } from "@heroicons/vue/24/solid";
 const props = defineProps({ filters: Object, users: Object });
 let form = useForm({
@@ -144,13 +150,4 @@ watch(
         });
     }, 150),
 );
-const reset = () => {
-    form = mapValues(form, () => null);
-};
-
-const deleteUser = (id) => {
-    router.delete(route("users.destroy", { id: id }), {
-        preserveScroll: true,
-    });
-};
 </script>

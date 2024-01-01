@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
     Route::post('/users/permission/{user:id}', [UserController::class, 'assignPermission'])->name('users.permission');
     Route::patch('/users/update/{user:id}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/avatar/{user:id}', [UserController::class, 'updateAvatar'])->name('users.avatar');
     Route::delete('/users/destroy/{user:id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Inertia\Middleware;
@@ -33,7 +34,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user() ? UserResource::make($request->user()->load('roles', 'permissions', 'media')) : null,
             ],
             'flash' => collect(Arr::only($request->session()->all(), ['success', 'error', 'warning']))
                 ->mapWithKeys(function ($notification, $key) {

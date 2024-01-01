@@ -1,10 +1,12 @@
 <script setup>
+import { UserCircleIcon } from "@heroicons/vue/24/solid";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
-
+import { router } from "@inertiajs/vue3";
+import { ref } from "vue";
 defineProps({
     mustVerifyEmail: {
         type: Boolean,
@@ -14,6 +16,29 @@ defineProps({
     },
 });
 
+const photoInput = ref(null);
+const photoPreview = ref(false);
+const updatePhotoPreview = () => {
+    const photo = photoInput.value.files[0];
+
+    if (!photo) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        photoPreview.value = e.target.result;
+    };
+
+    reader.readAsDataURL(photo);
+
+    router.post(
+        route("users.avatar", user.id),
+        {
+            profile_photo_path: photoInput.value.files[0],
+        },
+        { preserveScroll: true },
+    );
+};
 const user = usePage().props.auth.user;
 
 const form = useForm({
@@ -21,6 +46,7 @@ const form = useForm({
     surname: user.surname,
     login: user.login,
     email: user.email,
+    profile_photo_path: user.profile_photo_path,
 });
 </script>
 
@@ -36,9 +62,52 @@ const form = useForm({
             </p>
         </header>
 
+        <div class="my-6">
+            <InputLabel for="name" value="Фото" />
+
+            <div class="mt-2 flex items-center gap-x-3">
+                <div v-if="!photoPreview">
+                    <img
+                        v-if="form.profile_photo_path"
+                        class="h-12 w-12 rounded-full"
+                        :src="form.profile_photo_path"
+                        :alt="form.fullname"
+                    />
+                    <UserCircleIcon
+                        v-else
+                        class="h-12 w-12 text-gray-300"
+                        aria-hidden="true"
+                    />
+                </div>
+                <div v-show="photoPreview" class="mt-2">
+                    <span
+                        class="block h-10 w-10 rounded-full bg-cover bg-center bg-no-repeat"
+                        :style="
+                            'background-image: url(\'' + photoPreview + '\');'
+                        "
+                    />
+                </div>
+
+                <label
+                    for="file-upload"
+                    class="cursor-pointer rounded-md bg-gray-900 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-gray-700 dark:bg-white dark:text-gray-900 hover:dark:bg-gray-200"
+                >
+                    <span>Загрузить</span>
+                    <input
+                        id="file-upload"
+                        name="file-upload"
+                        ref="photoInput"
+                        type="file"
+                        class="sr-only"
+                        @change="updatePhotoPreview"
+                    />
+                </label>
+            </div>
+        </div>
+
         <form
             @submit.prevent="form.patch(route('profile.update'))"
-            class="mt-6 space-y-6"
+            class="space-y-6"
         >
             <div>
                 <InputLabel for="name" value="Имя" />

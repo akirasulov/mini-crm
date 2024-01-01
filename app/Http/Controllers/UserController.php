@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateAvatarRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
@@ -40,6 +41,13 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user)
     {
         $this->userService->update($request, $user);
+
+        return back()->with('success', 'Успешно!');
+    }
+
+    public function updateAvatar(UpdateAvatarRequest $request, User $user)
+    {
+        $this->userService->updateAvatar($request, $user);
 
         return back()->with('success', 'Успешно!');
     }

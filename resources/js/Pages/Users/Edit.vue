@@ -1,8 +1,6 @@
 <template>
     <AuthenticatedLayout>
-        <form
-            @submit.prevent="form.patch(route('users.update', { id: user.id }))"
-        >
+        <form @submit.prevent="submit">
             <h2
                 class="mb-4 text-base font-semibold leading-7 text-gray-900 dark:text-white"
             >
@@ -24,6 +22,51 @@
                 <div
                     class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
                 >
+                    <div class="col-span-full">
+                        <InputLabel for="name" value="Фото" />
+
+                        <div class="mt-2 flex items-center gap-x-3">
+                            <div v-if="!photoPreview">
+                                <img
+                                    v-if="form.profile_photo_path"
+                                    class="h-12 w-12 rounded-full"
+                                    :src="form.profile_photo_path"
+                                    :alt="form.fullname"
+                                />
+                                <UserCircleIcon
+                                    v-else
+                                    class="h-12 w-12 text-gray-300"
+                                    aria-hidden="true"
+                                />
+                            </div>
+                            <div v-show="photoPreview" class="mt-2">
+                                <span
+                                    class="block h-10 w-10 rounded-full bg-cover bg-center bg-no-repeat"
+                                    :style="
+                                        'background-image: url(\'' +
+                                        photoPreview +
+                                        '\');'
+                                    "
+                                />
+                            </div>
+
+                            <label
+                                for="file-upload"
+                                class="cursor-pointer rounded-md bg-gray-900 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-gray-700 dark:bg-white dark:text-gray-900 hover:dark:bg-gray-200"
+                            >
+                                <span>Загрузить</span>
+                                <input
+                                    id="file-upload"
+                                    name="file-upload"
+                                    ref="photoInput"
+                                    type="file"
+                                    class="sr-only"
+                                    @change="updatePhotoPreview"
+                                />
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="sm:col-span-3">
                         <InputLabel for="name" value="Имя" />
 
@@ -310,7 +353,7 @@
 </template>
 
 <script setup>
-import { KeyIcon } from "@heroicons/vue/24/solid";
+import { KeyIcon, UserCircleIcon } from "@heroicons/vue/24/solid";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { router, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/InputError.vue";
@@ -321,15 +364,44 @@ import Modal from "@/Components/Modal.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import TrashedMessage from "@/Shared/TrashedMessage.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 const props = defineProps({
     user: Object,
     roles: Object,
     permissions: Object,
-    flash: Object,
 });
 
-const form = useForm(props.user);
+const form = useForm({
+    name: props.user.name,
+    surname: props.user.surname,
+    login: props.user.login,
+    email: props.user.email,
+    password: props.user.password,
+    profile_photo_path: props.user.profile_photo_path,
+});
+const photoInput = ref(null);
+const photoPreview = ref(false);
+const updatePhotoPreview = () => {
+    const photo = photoInput.value.files[0];
+
+    if (!photo) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        photoPreview.value = e.target.result;
+    };
+
+    reader.readAsDataURL(photo);
+
+    router.post(
+        route("users.avatar", props.user.id),
+        {
+            profile_photo_path: photoInput.value.files[0],
+        },
+        { preserveScroll: true },
+    );
+};
 const changeRole = (target) => {
     router.post(
         route("users.role", { id: props.user.id }),
@@ -363,5 +435,10 @@ const restore = () => {
     if (confirm("Are you sure you want to restore this user?")) {
         router.put(`/users/${props.user.id}/restore`);
     }
+};
+const submit = () => {
+    form.patch(route("users.update", props.user.id), {
+        preserveScroll: true,
+    });
 };
 </script>

@@ -1,7 +1,8 @@
 <script setup>
 import { onMounted } from "vue";
 import { initFlowbite } from "flowbite";
-import { UsersIcon } from "@heroicons/vue/24/solid";
+import { UsersIcon, UserCircleIcon } from "@heroicons/vue/24/solid";
+
 import SideBar from "@/Components/SideBar.vue";
 import ThemeToogle from "@/Components/ThemeToogle.vue";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
@@ -65,12 +66,23 @@ const navigation = [
                             >
                                 <span class="sr-only">Open user menu</span>
                                 <img
+                                    v-if="
+                                        $page.props.auth.user.profile_photo_path
+                                    "
                                     class="h-8 w-8 rounded-full"
-                                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                                    alt="user photo"
+                                    :src="
+                                        $page.props.auth.user.profile_photo_path
+                                    "
+                                    :alt="$page.props.auth.user.email"
+                                />
+                                <UserCircleIcon
+                                    v-else
+                                    class="h-8 w-8 rounded-full text-gray-300"
+                                    aria-hidden="true"
                                 />
                             </button>
                         </div>
+
                         <div
                             class="z-50 my-4 hidden list-none divide-y divide-gray-100 rounded bg-white text-base shadow dark:divide-gray-600 dark:bg-gray-700"
                             id="dropdown-user"

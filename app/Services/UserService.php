@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\UpdateAvatarRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
@@ -16,7 +17,7 @@ class UserService
     {
         return [
             'filters' => $request->all(),
-            'users' => User::query()
+            'users' => User::with('media')
                 ->orderByName()
                 ->filter($request->only('search', 'trashed'))
                 ->paginate(10)
@@ -26,7 +27,7 @@ class UserService
                     'fullname' => $user->fullname,
                     'login' => $user->login,
                     'email' => $user->email,
-                    'profile_photo_path' => $user->profile_photo_path,
+                    'profile_photo_path' => $user->hasMedia('images') ? $user->getMedia('images')->first()->getFullUrl() : false,
                     'last_seen' => $user->updated_at->diffForHumans(),
                     'deleted_at' => $user->deleted_at,
                 ]),
@@ -57,7 +58,7 @@ class UserService
     public function edit(User $user): array
     {
         return [
-            'user' => UserResource::make($user->load('roles', 'permissions')),
+            'user' => UserResource::make($user->load('roles', 'permissions', 'media')),
             'roles' => Role::all(),
             'permissions' => Permission::all(),
         ];
@@ -65,11 +66,29 @@ class UserService
 
     public function update(UserUpdateRequest $request, User $user)
     {
+
+        if ($request->password) {
+            $user->update(['password' => $request->password]);
+        }
+
         if ($request->password) {
             $user->update(['password' => $request->password]);
         }
 
         $user->update($request->only('name', 'surname', 'login', 'email'));
+    }
+
+    public function updateAvatar(UpdateAvatarRequest $request, User $user)
+    {
+
+        if ($user->profile_photo_path) {
+            $getMedia = $user->getMedia('images')->first();
+            $getMedia->delete();
+        }
+        $media = $user->addMediaFromRequest('profile_photo_path')->toMediaCollection('images');
+
+        $user->update(['profile_photo_path' => $media->file_name]);
+
     }
 
     public function destroy(User $user)

@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'surname' => $this->surname,
             'login' => $this->login,
             'email' => $this->email,
-            'profile_photo_path' => $this->profile_photo_path,
+            'profile_photo_path' => $this->hasMedia('images') ?  $this->getMedia('images')->first()->getFullUrl() : false,
             'deleted_at' => $this->deleted_at,
             'roles' => $this->roles,
             'permissions' => $this->permissions,
