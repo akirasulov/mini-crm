@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Comment;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
@@ -104,5 +106,14 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
         $customUser->assignRole($admin);
         $customUser->givePermissionTo(Permission::all());
+
+        $users = User::factory(10)
+        ->create();
+
+    $posts = Post::factory(200)
+        ->recycle($users)
+        ->create();
+
+    $comments = Comment::factory(100)->recycle($users)->recycle($posts)->create();
     }
 }
