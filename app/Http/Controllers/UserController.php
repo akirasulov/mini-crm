@@ -85,6 +85,5 @@ class UserController extends Controller
         $this->userService->assignPermission($user);
 
         return back()->with('success', 'Успешно!');
-
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <Head title="Пользователи" />
+    <Head title="Обращения" />
     <AuthenticatedLayout>
         <div class="relative shadow-md sm:rounded-lg">
             <section class="h-full bg-white p-4 dark:bg-gray-900">
@@ -36,14 +36,15 @@
                             >
                                 <option :value="null">Все</option>
                                 <option :value="STATUS_PROGRESS">
-                                    Расматривается
+                                    Рассматривается
                                 </option>
                                 <option :value="STATUS_DONE">
-                                    Расмотренно
+                                    Рассмотрено
                                 </option>
                             </select>
                         </div>
                     </section>
+
                     <label for="table-search" class="sr-only">Поиск</label>
                     <div class="relative">
                         <div
@@ -79,7 +80,7 @@
                             <th scope="col" class="px-6 py-3">Номер</th>
                             <th scope="col" class="px-6 py-3">Ответсвенный</th>
                             <th scope="col" class="px-6 py-3">Дата создания</th>
-                            <th scope="col" class="px-6 py-3">Действия</th>
+                            <th scope="col" class="px-6 py-3"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -105,7 +106,7 @@
                             >
                                 {{
                                     post.status == STATUS_PROGRESS
-                                        ? "Расматривается"
+                                        ? "Рассматривается"
                                         : "Расмотренно"
                                 }}
                             </td>
@@ -113,17 +114,15 @@
                             <td class="px-6 py-4">{{ post.msisdn }}</td>
                             <td class="px-6 py-4">{{ post.operator }}</td>
                             <td class="px-6 py-4">{{ post.created_at }}</td>
-                            <td class="flex items-center px-6 py-4">
-                                <a
-                                    href="#"
+                            <td
+                                class="flex items-center justify-center px-6 py-4"
+                            >
+                                <Link
+                                    :href="route('posts.edit', post)"
                                     class="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                                    >Edit</a
                                 >
-                                <a
-                                    href="#"
-                                    class="ms-3 font-medium text-red-600 hover:underline dark:text-red-500"
-                                    >Remove</a
-                                >
+                                    <ChevronRightIcon class="size-6" />
+                                </Link>
                             </td>
                         </tr>
                     </tbody>
@@ -142,7 +141,7 @@ import pickBy from "lodash/pickBy";
 import { watch } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 import debounce from "lodash/debounce";
-import { MagnifyingGlassIcon, ы } from "@heroicons/vue/24/solid";
+import { MagnifyingGlassIcon, ChevronRightIcon } from "@heroicons/vue/24/solid";
 const props = defineProps({ filters: Object, posts: Object });
 let form = useForm({
     search: props.filters.search,
@@ -151,6 +150,7 @@ let form = useForm({
 });
 const STATUS_PROGRESS = 1; // На реализации
 const STATUS_DONE = 2; // Готов
+
 watch(
     form,
     debounce(function (value) {

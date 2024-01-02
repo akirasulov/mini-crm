@@ -1,14 +1,29 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $users = User::whereHas('roles', function (Builder $query) {
+        $query->whereIn('name', ['operator', 'back-office']);
+    })
+        ->get()
+        ->transform(fn($user) => [
+            'id' => $user->id,
+            'fullname' => $user->fullname,
+            'login' => $user->login,
+            'email' => $user->email,
+        ]);
+    return $users;
+    // return UserResource::collection($users);
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -20,10 +35,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/permission/create', [PermissionController::class, 'create'])->name('permissios.create');
     Route::post('/permission/store', [PermissionController::class, 'storePermission'])->name('permissios.store');
 
+    Route::post('/comments/store/{post:id}', CommentController::class)->name('comments.store');
+
     Route::post('/role/store', [PermissionController::class, 'storeRole'])->name('roles.store');
     Route::post('/role/destroy', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/edit/{post:id}', [PostController::class, 'edit'])->name('posts.edit');
+    Route::patch('/posts/update/{post:id}', [PostController::class, 'update'])->name('posts.update');
+    Route::get('/posts/export', [PostController::class, 'export'])->name('posts.export');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

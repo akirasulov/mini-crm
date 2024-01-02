@@ -1,5 +1,5 @@
 <template>
-    <nav class="relative mt-4 flex">
+    <nav class="relative mt-4 flex flex-wrap">
         <template v-for="link in links" :key="link.label">
             <Link
                 preserve-scroll

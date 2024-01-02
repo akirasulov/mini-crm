@@ -2,10 +2,15 @@
 
 namespace App\Services;
 
+use App\Exports\PostsExport;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PostService
 {
@@ -63,15 +68,26 @@ class PostService
      */
     public function edit(Post $post)
     {
-        //
+        $operators = User::whereHas('roles', function (Builder $query) {
+            $query->whereIn('name', ['operator', 'back-office']);
+        })
+            ->get()
+            ->transform(fn($user) => [
+                'id' => $user->id,
+                'fullname' => $user->fullname,
+            ]);
+        return [
+            'post' => PostResource::make($post->load('comments', 'operator', 'user')),
+            'operators' => $operators,
+        ];
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post): void
     {
-        //
+        $post->update($request->validated());
     }
 
     /**
@@ -80,6 +96,11 @@ class PostService
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function export()
+    {
+        return Excel::download(new PostsExport, 'posts.xlsx');
     }
 
 }

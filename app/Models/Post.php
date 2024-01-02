@@ -18,7 +18,7 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'body',
+        'body', 'operator_id', 'fullname', 'title', 'msisdn', 'status',
     ];
 
     public const STATUS_PROGRESS = 1; // На реализации

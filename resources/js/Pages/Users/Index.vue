@@ -1,9 +1,12 @@
 <template>
-     <Head title="Пользователи" />
+    <Head title="Пользователи" />
     <AuthenticatedLayout>
         <div class="relative shadow-md sm:rounded-lg">
             <section class="h-full bg-white p-4 dark:bg-gray-900">
-                <div class="flex justify-end p-2">
+                <div
+                    v-if="hasPermission('create user')"
+                    class="flex justify-end p-2"
+                >
                     <Link :href="route('users.create')">
                         <UserPlusIcon
                             class="size-7 text-purple-600 dark:text-green-400"
@@ -129,6 +132,8 @@ import pickBy from "lodash/pickBy";
 import { watch } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 import debounce from "lodash/debounce";
+import { usePermission } from "@/Composables/permissions";
+const { hasPermission } = usePermission();
 import {
     MagnifyingGlassIcon,
     PencilIcon,
