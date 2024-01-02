@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class, 'operator_id')
                 ->nullable()
                 ->constrained('users')
-                ->nullOnDelete();
+                ->noActionOnDelete();
             $table->uuid('uuid')->nullable()->unique();
             $table->string('fullname');
             $table->string('title');
@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('msisdn');
             $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

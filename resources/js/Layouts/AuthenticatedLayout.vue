@@ -5,6 +5,7 @@ import {
     UsersIcon,
     UserCircleIcon,
     LockClosedIcon,
+    DocumentDuplicateIcon,
 } from "@heroicons/vue/24/solid";
 
 import SideBar from "@/Components/SideBar.vue";
@@ -21,6 +22,11 @@ const navigation = [
         route: "users.index",
         icon: UsersIcon,
         name: "Пользователи",
+    },
+    {
+        route: "posts.index",
+        icon: DocumentDuplicateIcon,
+        name: "Обращения",
     },
     {
         route: "permissios.index",

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -21,6 +22,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/role/store', [PermissionController::class, 'storeRole'])->name('roles.store');
     Route::post('/role/destroy', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

@@ -99,7 +99,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'surname' => 'Rasulov',
             'email' => 'akirasulov2323@gmail.com',
             'login' => 'akirasulov',
-            'password' => '$2a$12$0ePC4wYJ4ChHQzE47Srzo.JvM9J8Ee.8fuaJl5dtW.8JIMOgptcNe',
+            'password' => '$2y$12$yWcyVBE3a2eNBVZcgvLCMugsPTuLf7d.abA1xz0TobFXzCBnUbm9.',
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),
             'profile_photo_path' => null,
@@ -108,12 +108,12 @@ class RolesAndPermissionsSeeder extends Seeder
         $customUser->givePermissionTo(Permission::all());
 
         $users = User::factory(10)
-        ->create();
+            ->create();
 
-    $posts = Post::factory(200)
-        ->recycle($users)
-        ->create();
+        $posts = Post::factory(200)
+            ->recycle($users)
+            ->create();
 
-    $comments = Comment::factory(100)->recycle($users)->recycle($posts)->create();
+        $comments = Comment::factory(100)->recycle($users)->recycle($posts)->create();
     }
 }

@@ -1,26 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use App\Services\PostService;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class PostService
 {
-
-    public function __construct(private PostService $postService)
-    {
-        $this->postService = $postService;
-    }
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): array
     {
-        return inertia()->render('Posts/Index', $this->postService->index($request));
+        return [
+            'filters' => $request->all(),
+            'posts' => Post::with('user', 'operator')
+                ->orderById()
+                ->filter($request->only('search', 'trashed', 'status'))
+                ->paginate(10)
+                ->withQueryString()
+                ->through(fn($post) => [
+                    'id' => $post->id,
+                    'uuid' => $post->uuid,
+                    'fullname' => $post->fullname,
+                    'operator' => $post->operator->fullname,
+                    'title' => $post->title,
+                    'msisdn' => $post->msisdn,
+                    'status' => $post->status,
+                    'created_at' => $post->created_at->format('d-m-Y h:i:s'),
+                ]),
+        ];
     }
 
     /**
@@ -70,4 +81,5 @@ class PostController extends Controller
     {
         //
     }
+
 }
