@@ -52,6 +52,7 @@
                             </div>
 
                             <label
+                                v-if="checkpermission.canUpdateUser"
                                 for="file-upload"
                                 class="cursor-pointer rounded-md bg-gray-900 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-300 hover:bg-gray-700 dark:bg-white dark:text-gray-900 hover:dark:bg-gray-200"
                             >
@@ -77,6 +78,7 @@
                             class="mt-1 block w-full"
                             v-model="form.name"
                             autofocus
+                            :disabled="isDisabled"
                         />
 
                         <InputError :message="form.errors.name" class="mt-2" />
@@ -90,6 +92,7 @@
                             type="text"
                             class="mt-1 block w-full"
                             v-model="form.surname"
+                            :disabled="isDisabled"
                         />
 
                         <InputError
@@ -106,6 +109,7 @@
                             type="text"
                             class="mt-1 block w-full"
                             v-model="form.login"
+                            :disabled="isDisabled"
                         />
 
                         <InputError :message="form.errors.login" class="mt-2" />
@@ -118,6 +122,7 @@
                             type="email"
                             class="mt-1 block w-full"
                             v-model="form.email"
+                            :disabled="isDisabled"
                         />
 
                         <InputError :message="form.errors.email" class="mt-2" />
@@ -131,6 +136,7 @@
                             type="password"
                             class="mt-1 block w-full"
                             v-model="form.password"
+                            :disabled="isDisabled"
                         />
 
                         <InputError
@@ -139,6 +145,7 @@
                         />
                     </div>
                     <div
+                        v-if="checkpermission.canUpdateUser"
                         class="col-span-full flex items-center justify-end gap-x-6"
                     >
                         <Link
@@ -151,7 +158,11 @@
                             >Сохранить</PrimaryButton
                         >
                     </div>
-                    <div class="col-span-full">
+
+                    <div
+                        v-if="checkpermission.canGrantRole"
+                        class="col-span-full"
+                    >
                         <div
                             id="accordion-flush"
                             data-accordion="collapse"
@@ -306,7 +317,11 @@
                             </div>
                         </div>
                     </div>
-                    <DangerButton type="button" @click="confirmUserDeletion">
+                    <DangerButton
+                        v-if="checkpermission.canDeleteUser"
+                        type="button"
+                        @click="confirmUserDeletion"
+                    >
                         Удалить аккаунт</DangerButton
                     >
 
@@ -365,7 +380,9 @@ import Modal from "@/Components/Modal.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import TrashedMessage from "@/Shared/TrashedMessage.vue";
-import { ref, watch } from "vue";
+import { usePermission } from "@/Composables/permissions";
+const { checkpermission } = usePermission();
+import { ref } from "vue";
 const props = defineProps({
     user: Object,
     roles: Object,
@@ -382,6 +399,7 @@ const form = useForm({
 });
 const photoInput = ref(null);
 const photoPreview = ref(false);
+const isDisabled = !checkpermission.canUpdateUser;
 const updatePhotoPreview = () => {
     const photo = photoInput.value.files[0];
 

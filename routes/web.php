@@ -1,31 +1,15 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('/', function () {
-    $users = User::whereHas('roles', function (Builder $query) {
-        $query->whereIn('name', ['operator', 'back-office']);
-    })
-        ->get()
-        ->transform(fn($user) => [
-            'id' => $user->id,
-            'fullname' => $user->fullname,
-            'login' => $user->login,
-            'email' => $user->email,
-        ]);
-    return $users;
-    // return UserResource::collection($users);
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', IndexController::class)->middleware(['auth', 'verified'])->name('index');
 
 Route::middleware('auth')->group(function () {
 

@@ -3,7 +3,7 @@
     <AuthenticatedLayout>
         <form @submit.prevent="submit" class="bg-white dark:bg-gray-800">
             <div class="px-4 py-8 lg:py-16">
-                <template v-if="hasPermission('update post')">
+                <template v-if="checkpermission.canUpdatePostStatus">
                     <InputLabel for="status" value="Статус" />
                     <select
                         @change="statusTarget($event.target)"
@@ -42,7 +42,7 @@
                     </div>
                     <div class="w-full">
                         <InputLabel for="operator" value="Ответственный" />
-                        <template v-if="hasPermission('change responsible')">
+                        <template v-if="checkpermission.canChangeResponsible">
                             <VueMultiselect
                                 class="mt-2"
                                 v-model="selectedOperator"
@@ -126,6 +126,7 @@
                 >
             </div>
         </form>
+
         <form @submit.prevent="submitComment">
             <section
                 class="mb-4 rounded-xl bg-white py-8 antialiased lg:py-16 dark:bg-gray-900"
@@ -138,7 +139,7 @@
                             Комментарии
                         </h2>
                     </div>
-                    <template v-if="hasPermission('leave commemt')">
+                    <template v-if="checkpermission.canLeaveComment">
                         <div class="mb-6">
                             <div class="mb-4">
                                 <label for="comment" class="sr-only"
@@ -213,11 +214,12 @@ import { useForm } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
 import { UserCircleIcon } from "@heroicons/vue/24/solid";
 import { usePermission } from "@/Composables/permissions";
-const { hasPermission } = usePermission();
+const { checkpermission } = usePermission();
 const props = defineProps({
     post: Object,
     operators: Object,
 });
+
 const STATUS_PROGRESS = 1; // На реализации
 const STATUS_DONE = 2; // Готов
 const form = useForm(props.post);

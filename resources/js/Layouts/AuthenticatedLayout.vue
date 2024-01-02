@@ -1,39 +1,51 @@
 <script setup>
-import { onMounted } from "vue";
+import { computed, onMounted, reactive } from "vue";
 import { initFlowbite } from "flowbite";
 import {
     UsersIcon,
     UserCircleIcon,
-    LockClosedIcon,
+    HomeIcon,
     DocumentDuplicateIcon,
+    ShieldCheckIcon,
 } from "@heroicons/vue/24/solid";
 
 import SideBar from "@/Components/SideBar.vue";
 import ThemeToogle from "@/Components/ThemeToogle.vue";
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import { usePermission } from "@/Composables/permissions";
+const { checkpermission } = usePermission();
 onMounted(() => {
     initFlowbite();
 });
 defineOptions({
     inheritAttrs: false,
 });
-const navigation = [
+const navigation = reactive([
+    {
+        route: "index",
+        icon: HomeIcon,
+        name: "Главная",
+        can: checkpermission.canCreatePost,
+    },
     {
         route: "users.index",
         icon: UsersIcon,
         name: "Пользователи",
+        can: checkpermission.canViewUser,
     },
     {
         route: "posts.index",
         icon: DocumentDuplicateIcon,
         name: "Обращения",
+        can: checkpermission.canViewPost,
     },
     {
         route: "permissios.index",
-        icon: LockClosedIcon,
+        icon: ShieldCheckIcon,
         name: "Роли и разрешения",
+        can: checkpermission.isAdmin,
     },
-];
+]);
 </script>
 
 <template>
@@ -65,7 +77,7 @@ const navigation = [
                             ></path>
                         </svg>
                     </button>
-                    <Link :href="route('dashboard')" class="ms-2 flex md:me-24">
+                    <Link :href="route('index')" class="ms-2 flex md:me-24">
                         <ApplicationLogo />
                     </Link>
                 </div>

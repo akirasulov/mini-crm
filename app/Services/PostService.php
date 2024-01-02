@@ -19,10 +19,16 @@ class PostService
      */
     public function index(Request $request): array
     {
+        $posts = Post::with('user', 'operator');
+
+        if (!auth()->user()->hasAnyRole(['admin', 'back-office'])) {
+            $posts = $posts->where('operator_id', auth()->user()->id);
+        }
+
         return [
             'filters' => $request->all(),
-            'posts' => Post::with('user', 'operator')
-                ->orderById()
+            'posts' => $posts
+                ->orderByStatus()
                 ->filter($request->only('search', 'trashed', 'status'))
                 ->paginate(10)
                 ->withQueryString()
@@ -68,6 +74,9 @@ class PostService
      */
     public function edit(Post $post)
     {
+        auth()->user()->hasPermissionTo('update post')
+        ? true : abort(403, 'Нет доступа');
+
         $operators = User::whereHas('roles', function (Builder $query) {
             $query->whereIn('name', ['operator', 'back-office']);
         })

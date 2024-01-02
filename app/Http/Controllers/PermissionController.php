@@ -10,6 +10,9 @@ class PermissionController extends Controller
 
     public function index()
     {
+        auth()->user()->hasRole('admin')
+        ? true : abort(403, 'Нет доступа');
+
         return inertia()->render('Admin/RoleAndPermission/Index', [
             'roles' => Role::with('permissions')->get(),
             'permissions' => Permission::all(),

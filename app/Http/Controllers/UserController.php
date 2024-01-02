@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateAvatarRequest;
+use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
@@ -20,10 +21,12 @@ class UserController extends Controller
 
     public function index(Request $request): Response
     {
+       
+
         return inertia()->render('Users/Index', $this->userService->index($request));
     }
 
-    public function create(): Response
+    public function create(UserCreateRequest $request): Response
     {
         return inertia()->render('Users/Create', $this->userService->create());
     }

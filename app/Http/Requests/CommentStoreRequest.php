@@ -11,7 +11,8 @@ class CommentStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->hasPermissionTo('leave commemt')
+        ? true : false;
     }
 
     /**

@@ -39,9 +39,9 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function scopeOrderById($query): void
+    public function scopeOrderByStatus($query): void
     {
-        $query->orderBy('id');
+        $query->orderBy('status', 'asc')->orderBy('id');
     }
 
     public function scopeFilter($query, array $filters)

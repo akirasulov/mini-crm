@@ -14,7 +14,7 @@ class RolesAndPermissionsSeeder extends Seeder
 {
     public function run()
     {
-        // Reset cached roles and permissions
+        // Очищяем кэш
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // Создание разрешений
@@ -24,6 +24,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'view user']);
         Permission::create(['name' => 'create post']);
         Permission::create(['name' => 'update post']);
+        Permission::create(['name' => 'update post status']);
         Permission::create(['name' => 'delete post']);
         Permission::create(['name' => 'view post']);
         Permission::create(['name' => 'leave commemt']);
@@ -41,7 +42,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         //Специалист back-office может создавать/изменять обращения и просматривать клиентов
         $back_office = Role::create(['name' => 'back-office'])
-            ->givePermissionTo(['create post', 'update post', 'view post', 'create user', 'update user', 'view user', 'leave commemt', 'grant a role', 'create role and permission']);
+            ->givePermissionTo(['create post', 'update post', 'update post status', 'view post', 'delete post', 'create user', 'update user', 'view user', 'delete user', 'leave commemt', 'change responsible']);
 
         //Администратору доступен весъ функционал
         $admin = Role::create(['name' => 'admin'])->givePermissionTo(Permission::all());
@@ -72,12 +73,12 @@ class RolesAndPermissionsSeeder extends Seeder
 
         User::factory(10)->create()->each(function ($user) use ($back_office) {
             $user->assignRole($back_office);
-            $user->givePermissionTo(['create post', 'update post', 'view post', 'create user', 'update user', 'view user', 'leave commemt', 'grant a role', 'create role and permission']);
+            $user->givePermissionTo(['create post', 'update post', 'update post status', 'view post', 'delete post', 'create user', 'update user', 'view user', 'delete user', 'leave commemt', 'change responsible']);
         });
 
         User::factory(10)->create()->each(function ($user) use ($back_office) {
             $user->assignRole($back_office);
-            $user->givePermissionTo(['create post', 'update post', 'view post', 'create user', 'update user', 'view user', 'leave commemt', 'grant a role', 'create role and permission']);
+            $user->givePermissionTo(['create post', 'update post', 'update post status', 'view post', 'delete post', 'create user', 'update user', 'view user', 'delete user', 'leave commemt', 'change responsible']);
             $user->deleted_at = now();
             $user->save();
         });
@@ -114,6 +115,6 @@ class RolesAndPermissionsSeeder extends Seeder
             ->recycle($users)
             ->create();
 
-        $comments = Comment::factory(100)->recycle($users)->recycle($posts)->create();
+        $comments = Comment::factory(1000)->recycle($users)->recycle($posts)->create();
     }
 }

@@ -4,7 +4,7 @@
         <div class="relative shadow-md sm:rounded-lg">
             <section class="h-full bg-white p-4 dark:bg-gray-900">
                 <div
-                    v-if="hasPermission('create user')"
+                    v-if="checkpermission.canCreateUser"
                     class="flex justify-end p-2"
                 >
                     <Link :href="route('users.create')">
@@ -45,7 +45,7 @@
                             type="text"
                             v-model="form.search"
                             id="table-search-users"
-                            class="block w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                            class="block w-72 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                             placeholder="Поиск пользователей"
                         />
                     </div>
@@ -133,7 +133,7 @@ import { watch } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 import debounce from "lodash/debounce";
 import { usePermission } from "@/Composables/permissions";
-const { hasPermission } = usePermission();
+const { checkpermission } = usePermission();
 import {
     MagnifyingGlassIcon,
     PencilIcon,

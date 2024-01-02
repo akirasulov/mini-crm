@@ -7,6 +7,7 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Permission\Models\Permission;
@@ -16,9 +17,20 @@ class UserService
 {
     public function index(Request $request): array
     {
+        auth()->user()->hasPermissionTo('view user')
+        ? true : abort(403, 'Нет доступа');
+
+        $users = User::with('media');
+
+        if (!auth()->user()->hasAnyRole(['admin', 'back-office'])) {
+            $users = $users->whereHas('roles', function (Builder $query) {
+                $query->where('name', 'client');
+            });
+        }
+
         return [
             'filters' => $request->all(),
-            'users' => User::with('media')
+            'users' => $users
                 ->orderByName()
                 ->filter($request->only('search', 'trashed'))
                 ->paginate(10)

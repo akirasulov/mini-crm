@@ -11,7 +11,8 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->hasPermissionTo('update post')
+        ? true : false;
     }
 
     /**

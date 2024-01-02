@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch } from "vue";
+import { onMounted } from "vue";
 import { initDropdowns } from "flowbite";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputError from "@/Components/InputError.vue";
@@ -56,7 +56,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthenticatedLayout class="h-screen">
+    <AuthenticatedLayout>
         <section class="bg-white dark:bg-gray-800">
             <div class="flex w-full max-w-3xl items-center">
                 <div class="w-full">
