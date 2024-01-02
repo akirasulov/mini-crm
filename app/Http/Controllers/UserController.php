@@ -21,7 +21,6 @@ class UserController extends Controller
 
     public function index(Request $request): Response
     {
-       
 
         return inertia()->render('Users/Index', $this->userService->index($request));
     }
@@ -69,6 +68,11 @@ class UserController extends Controller
         $this->userService->restore($user);
 
         return back()->with('success', 'Успешно!');
+    }
+
+    public function export()
+    {
+        return $this->userService->export();
     }
 
     public function assignRole(User $user): RedirectResponse

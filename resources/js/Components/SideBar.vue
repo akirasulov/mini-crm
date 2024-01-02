@@ -50,14 +50,14 @@
                     <ul id="dropdown-pages" class="hidden space-y-2 py-2">
                         <li>
                             <a
-                                href="#"
+                                :href="route('users.export')"
                                 class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                 >Пользователи</a
                             >
                         </li>
                         <li>
                             <a
-                                href="#"
+                                :href="route('posts.export')"
                                 class="group flex w-full items-center rounded-lg p-2 pl-11 text-base font-normal text-gray-900 transition duration-75 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                                 >Обращения</a
                             >

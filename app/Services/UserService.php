@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exports\UsersExport;
 use App\Http\Requests\UpdateAvatarRequest;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -113,6 +115,11 @@ class UserService
     public function restore(User $user): void
     {
         $user->restore();
+    }
+
+    public function export()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 
     public function assignRole(User $user): void

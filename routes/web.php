@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/users/update/{user:id}', [UserController::class, 'update'])->name('users.update');
     Route::post('/users/avatar/{user:id}', [UserController::class, 'updateAvatar'])->name('users.avatar');
     Route::delete('/users/destroy/{user:id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users/export', [UserController::class, 'export'])->name('users.export');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

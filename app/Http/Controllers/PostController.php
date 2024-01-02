@@ -75,9 +75,8 @@ class PostController extends Controller
         //
     }
 
-    public function export(Request $request)
+    public function export()
     {
-        dd($request->all());
         return $this->postService->export();
     }
 }
