@@ -4,7 +4,7 @@
         <form @submit.prevent="submit" class="bg-white dark:bg-gray-800">
             <div class="px-4 py-8 lg:py-16">
                 <TrashedMessage
-                    v-if="post.deleted_at"
+                    v-if="post.deleted_at && checkpermission.isAdmin"
                     class="mt-6"
                     @restore="restore"
                     >Данныая запись была удалёна.</TrashedMessage

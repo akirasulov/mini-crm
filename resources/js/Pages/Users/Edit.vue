@@ -15,7 +15,7 @@
                     Персональная данные
                 </h2>
                 <TrashedMessage
-                    v-if="user.deleted_at"
+                    v-if="user.deleted_at && checkpermission.isAdmin"
                     class="mt-6"
                     @restore="restore"
                     >Данный пользователь был удалён.</TrashedMessage
