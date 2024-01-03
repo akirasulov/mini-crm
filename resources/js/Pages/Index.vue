@@ -51,14 +51,12 @@ const STATUS_DONE = 2; // Готов
                                             Тема
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            ФИО
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
                                             Статус
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Название
+                                            ФИО
                                         </th>
+
                                         <th scope="col" class="px-6 py-3">
                                             Номер
                                         </th>
@@ -190,6 +188,21 @@ const STATUS_DONE = 2; // Готов
                                                                         }}
                                                                     </p>
                                                                 </div>
+                                                                <div
+                                                                    class="col-span-2"
+                                                                >
+                                                                    <label
+                                                                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                                                                        >Описание</label
+                                                                    >
+                                                                    <p
+                                                                        class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-500 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+                                                                    >
+                                                                        {{
+                                                                            post.body
+                                                                        }}
+                                                                    </p>
+                                                                </div>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -200,9 +213,7 @@ const STATUS_DONE = 2; // Готов
                                         <td class="px-6 py-4">
                                             {{ post.title }}
                                         </td>
-                                        <td class="px-6 py-4">
-                                            {{ post.fullname }}
-                                        </td>
+
                                         <td
                                             class="px-6 py-4 text-white"
                                             :class="
@@ -218,7 +229,7 @@ const STATUS_DONE = 2; // Готов
                                             }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ post.title }}
+                                            {{ post.fullname }}
                                         </td>
                                         <td class="px-6 py-4">
                                             {{ post.msisdn }}
@@ -230,7 +241,19 @@ const STATUS_DONE = 2; // Готов
                                     </tr>
                                 </tbody>
                             </table>
-                            <Pagination class="py-4" :links="posts.links" />
+                            <div
+                                v-if="!posts.data.length"
+                                class="flex justify-center py-2"
+                            >
+                                <p class="text-grray-800 dark:text-white">
+                                    Пока пусто!
+                                </p>
+                            </div>
+                            <Pagination
+                                v-else
+                                class="py-4"
+                                :links="posts.links"
+                            />
                         </div>
                     </div>
                 </div>

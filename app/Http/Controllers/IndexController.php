@@ -24,6 +24,7 @@ class IndexController extends Controller
                 'title' => $post->title,
                 'msisdn' => $post->msisdn,
                 'status' => $post->status,
+                'body' => $post->body,
                 'created_at' => $post->created_at->format('d-m-Y'),
             ]);
 
