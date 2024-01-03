@@ -48,6 +48,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->assignRole('client');
+
+        $user->givePermissionTo('create post');
+
         event(new Registered($user));
 
         Auth::login($user);
