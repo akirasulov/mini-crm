@@ -89,7 +89,6 @@
                         class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400"
                     >
                         <tr>
-                            <th scope="col" class="px-6 py-3"></th>
                             <th scope="col" class="px-6 py-3">Лиц. счет</th>
                             <th scope="col" class="px-6 py-3">ФИО</th>
                             <th scope="col" class="px-6 py-3">Статус</th>
