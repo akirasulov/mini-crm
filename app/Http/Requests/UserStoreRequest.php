@@ -13,7 +13,7 @@ class UserStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->hasPermissionTo('store user')
+        return auth()->user()->hasPermissionTo('create user')
         ? true : false;
     }
 

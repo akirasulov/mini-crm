@@ -154,7 +154,9 @@
                         >
                             Назад
                         </Link>
-                        <PrimaryButton :disabled="form.processing"
+                        <PrimaryButton
+                            :loading="form.processing"
+                            :disabled="form.processing"
                             >Сохранить</PrimaryButton
                         >
                     </div>
@@ -320,6 +322,7 @@
                     <DangerButton
                         v-if="checkpermission.canDeleteUser"
                         type="button"
+                        :loading="form.processing"
                         @click="confirmUserDeletion"
                     >
                         Удалить аккаунт</DangerButton
@@ -348,6 +351,7 @@
                                         'opacity-25': form.processing,
                                     }"
                                     :disabled="form.processing"
+                                    :loading="form.processing"
                                     type="button"
                                     @click="
                                         router.delete(

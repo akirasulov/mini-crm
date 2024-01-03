@@ -98,6 +98,7 @@ const submit = () => {
                         <PrimaryButton
                             :class="{ 'opacity-25': form.processing }"
                             :disabled="form.processing"
+                            :loading="true"
                         >
                             Сбросить пароль
                         </PrimaryButton>

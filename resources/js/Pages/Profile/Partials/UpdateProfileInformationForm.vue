@@ -195,7 +195,9 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing"
+                <PrimaryButton
+                    :loading="form.processing"
+                    :disabled="form.processing"
                     >Сохранить</PrimaryButton
                 >
 
@@ -209,7 +211,7 @@ const form = useForm({
                         v-if="form.recentlySuccessful"
                         class="text-sm text-gray-600 dark:text-gray-400"
                     >
-                        Saved.
+                        Сохранено.
                     </p>
                 </Transition>
             </div>

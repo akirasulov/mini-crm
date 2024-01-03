@@ -47,7 +47,9 @@ const submit = () => {
                 <InputError :message="form.errors.name" class="mt-2" />
             </div>
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing"
+                <PrimaryButton
+                    :disabled="form.processing"
+                    :loading="form.processing"
                     >Сохранить</PrimaryButton
                 >
 

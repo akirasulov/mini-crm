@@ -13,11 +13,11 @@ Route::get('/', IndexController::class)->middleware(['auth', 'verified'])->name(
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissios.index');
-    Route::post('/permission/assign', [PermissionController::class, 'assign'])->name('permissios.assign');
-    Route::post('/permission/remove', [PermissionController::class, 'remove'])->name('permissios.remove');
-    Route::get('/permission/create', [PermissionController::class, 'create'])->name('permissios.create');
-    Route::post('/permission/store', [PermissionController::class, 'storePermission'])->name('permissios.store');
+    Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+    Route::post('/permission/assign', [PermissionController::class, 'assign'])->name('permissions.assign');
+    Route::post('/permission/remove', [PermissionController::class, 'remove'])->name('permissions.remove');
+    Route::get('/permission/create', [PermissionController::class, 'create'])->name('permissions.create');
+    Route::post('/permission/store', [PermissionController::class, 'storePermission'])->name('permissions.store');
 
     Route::post('/comments/store/{post:id}', CommentController::class)->name('comments.store');
 

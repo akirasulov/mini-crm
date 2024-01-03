@@ -93,8 +93,12 @@
 
                                 <div class="mt-6">
                                     <button
-                                        class="w-full transform rounded-lg bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-300 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                                        class="flex w-full transform items-center justify-center rounded-lg bg-blue-500 px-4 py-2 tracking-wide text-white transition-colors duration-300 hover:bg-blue-400 focus:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
                                     >
+                                        <div
+                                            v-if="form.processing"
+                                            class="btn-spinner mr-2"
+                                        />
                                         Вход
                                     </button>
                                 </div>

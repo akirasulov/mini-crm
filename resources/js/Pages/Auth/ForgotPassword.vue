@@ -65,8 +65,12 @@ const submit = () => {
 
                         <InputError class="mt-2" :message="form.errors.email" />
                         <button
-                            class="mt-4 w-full transform rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium capitalize tracking-wide text-white transition-colors duration-300 hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+                            class="mt-4 flex w-full transform items-center justify-center rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium capitalize tracking-wide text-white transition-colors duration-300 hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
                         >
+                            <div
+                                v-if="form.processing"
+                                class="btn-spinner mr-2"
+                            />
                             Сбросить пароль
                         </button>
 

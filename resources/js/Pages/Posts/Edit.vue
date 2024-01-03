@@ -121,7 +121,10 @@
                     </div>
                 </div>
 
-                <PrimaryButton class="mt-4" :disabled="form.processing"
+                <PrimaryButton
+                    class="mt-4"
+                    :disabled="form.processing"
+                    :loading="form.processing"
                     >Сохранить</PrimaryButton
                 >
             </div>
@@ -152,7 +155,10 @@
                                     placeholder="Ваш комментарий"
                                 />
                             </div>
-                            <PrimaryButton class="mt-2"
+                            <PrimaryButton
+                                class="mt-2"
+                                :loading="commentForm.processing"
+                                :disabled="commentForm.processing"
                                 >Отправить</PrimaryButton
                             >
                         </div>

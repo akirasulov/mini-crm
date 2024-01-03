@@ -40,7 +40,7 @@ const navigation = reactive([
         can: checkpermission.canViewPost,
     },
     {
-        route: "permissios.index",
+        route: "permissions.index",
         icon: ShieldCheckIcon,
         name: "Роли и разрешения",
         can: checkpermission.isAdmin,
