@@ -28,9 +28,9 @@ const submit = () => {
         <section class="bg-white dark:bg-gray-900">
             <div class="flex min-h-screen justify-center">
                 <div
-                    class="hidden bg-cover lg:block lg:w-2/5"
+                    class="hidden bg-cover bg-center lg:block lg:w-2/5"
                     style="
-                        background-image: url(&quot;/assets/images/9104455.jpg&quot;);
+                        background-image: url(&quot;/assets/images/register.jpg&quot;);
                     "
                 ></div>
 
