@@ -37,7 +37,7 @@ class RolesAndPermissionsSeeder extends Seeder
             ->givePermissionTo(['create post']);
 
         //Оператор может создавать/изменять обращения и просматривать клиентов
-        $opeator = Role::create(['name' => 'operator'])
+        $operator = Role::create(['name' => 'operator'])
             ->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
 
         //Специалист back-office может создавать/изменять обращения и просматривать клиентов
@@ -59,13 +59,13 @@ class RolesAndPermissionsSeeder extends Seeder
             $user->save();
         });
 
-        User::factory(20)->create()->each(function ($user) use ($opeator) {
-            $user->assignRole($opeator);
+        User::factory(20)->create()->each(function ($user) use ($operator) {
+            $user->assignRole($operator);
             $user->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
         });
 
-        User::factory(20)->create()->each(function ($user) use ($opeator) {
-            $user->assignRole($opeator);
+        User::factory(20)->create()->each(function ($user) use ($operator) {
+            $user->assignRole($operator);
             $user->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
             $user->deleted_at = now();
             $user->save();
