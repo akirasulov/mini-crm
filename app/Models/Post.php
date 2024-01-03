@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -18,7 +19,7 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'body', 'operator_id', 'fullname', 'title', 'msisdn', 'status',
+        'body', 'operator_id', 'fullname', 'title', 'msisdn', 'status', 'uuid',
     ];
 
     public const STATUS_PROGRESS = 1; // На реализации
@@ -26,12 +27,17 @@ class Post extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 
-    public function operator(): BelongsTo
+    public function operator(): HasOne
     {
-        return $this->belongsTo(User::class, 'operator_id', 'id')->withTrashed();
+        return $this->hasOne(User::class, 'id', 'operator_id');
+    }
+
+    public function client(): HasOne
+    {
+        return $this->hasOne(User::class);
     }
 
     public function comments(): HasMany

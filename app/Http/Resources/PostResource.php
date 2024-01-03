@@ -19,7 +19,6 @@ class PostResource extends JsonResource
             'uuid ' => $this->uuid,
             'fullname' => $this->fullname,
             'operator_id' => $this->operator_id,
-
             'title' => $this->title,
             'body' => $this->body,
             'msisdn' => $this->msisdn,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -11,6 +12,9 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
-    return inertia()->render('Index');
+        $posts = Post::where('user_id', $request->user()->id)->get();
+        return inertia()->render('Index', [
+            'posts' => $posts,
+        ]);
     }
 }

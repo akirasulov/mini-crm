@@ -37,7 +37,7 @@ class RolesAndPermissionsSeeder extends Seeder
             ->givePermissionTo(['create post']);
 
         //Оператор может создавать/изменять обращения и просматривать клиентов
-        $opeator = Role::create(['name' => 'opeator'])
+        $opeator = Role::create(['name' => 'operator'])
             ->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
 
         //Специалист back-office может создавать/изменять обращения и просматривать клиентов

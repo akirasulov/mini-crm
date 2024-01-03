@@ -30,15 +30,17 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return inertia()->render('Posts/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request): RedirectResponse
     {
-        //
+        $this->postService->store($request);
+
+        return redirect()->route('posts.index')->with('success', 'Успешно!');
     }
 
     /**

@@ -11,7 +11,7 @@ class StorePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->user()->hasPermissionTo('store post')
+        return auth()->user()->hasPermissionTo('create post')
         ? true : false;
     }
 
@@ -23,7 +23,10 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'fullname' => 'required',
+            'title' => 'required',
+            'body' => 'required',
+            'msisdn' => 'required',
         ];
     }
 }

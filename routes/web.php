@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/role/destroy', [RoleController::class, 'destroy'])->name('roles.destroy');
 
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
     Route::get('/posts/edit/{post:id}', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/update/{post:id}', [PostController::class, 'update'])->name('posts.update');
     Route::get('/posts/export', [PostController::class, 'export'])->name('posts.export');

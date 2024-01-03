@@ -4,6 +4,16 @@
         <div class="relative shadow-md sm:rounded-lg">
             <section class="h-full bg-white p-4 dark:bg-gray-900">
                 <div
+                    v-if="checkpermission.canCreatePost"
+                    class="flex justify-end p-2"
+                >
+                    <Link :href="route('posts.create')">
+                        <DocumentPlusIcon
+                            class="size-7 text-purple-600 dark:text-green-400"
+                        />
+                    </Link>
+                </div>
+                <div
                     class="flex-column flex flex-wrap items-center justify-between space-y-4 md:flex-row md:space-y-0"
                 >
                     <section class="flex space-x-3">
@@ -141,7 +151,11 @@ import pickBy from "lodash/pickBy";
 import { watch } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 import debounce from "lodash/debounce";
-import { MagnifyingGlassIcon, ChevronRightIcon } from "@heroicons/vue/24/solid";
+import {
+    MagnifyingGlassIcon,
+    ChevronRightIcon,
+    DocumentPlusIcon,
+} from "@heroicons/vue/24/solid";
 const props = defineProps({ filters: Object, posts: Object });
 import { usePermission } from "@/Composables/permissions";
 const { checkpermission } = usePermission();

@@ -56,9 +56,10 @@ const submit = () => {
 </script>
 
 <template>
+    <Head title="Создание пользователя" />
     <AuthenticatedLayout>
         <section class="bg-white dark:bg-gray-800">
-            <div class="flex w-full max-w-3xl items-center">
+            <div class="flex items-center">
                 <div class="w-full">
                     <h1
                         class="text-2xl font-semibold capitalize tracking-wider text-gray-800 dark:text-white"

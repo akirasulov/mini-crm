@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PostService
@@ -58,7 +59,20 @@ class PostService
      */
     public function store(StorePostRequest $request)
     {
-        //
+        $user = User::withCount('posts')->whereHas('posts', function (Builder $query) {
+            $query->where('status', Post::STATUS_PROGRESS);
+        })->having('posts_count', '<', 3)->get()->random();
+
+        auth()->user()->postsAsClinet()->create([
+            'operator_id' => $user->id,
+            'title' => $request->title,
+            'body' => $request->body,
+            'uuid' => Str::uuid(),
+            'fullname' => $request->fullname,
+            'title' => $request->title,
+            'msisdn' => $request->msisdn,
+            'status' => Post::STATUS_PROGRESS,
+        ]);
     }
 
     /**
