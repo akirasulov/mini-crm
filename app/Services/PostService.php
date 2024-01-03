@@ -76,14 +76,6 @@ class PostService
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Post $post)
@@ -116,9 +108,17 @@ class PostService
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Post $post): void
     {
-        //
+        $post->delete();
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(Post $post): void
+    {
+        $post->restore();
     }
 
     public function export()

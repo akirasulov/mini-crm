@@ -44,14 +44,6 @@ class PostController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Post $post): Response
@@ -72,9 +64,22 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Post $post): RedirectResponse
     {
-        //
+        $this->postService->destroy($post);
+
+        return redirect()->route('posts.index')->with('success', 'Успешно!');
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(Post $post): RedirectResponse
+    {
+        $this->postService->restore($post);
+
+        return redirect()->route('posts.index')->with('success', 'Успешно!');
+
     }
 
     public function export()

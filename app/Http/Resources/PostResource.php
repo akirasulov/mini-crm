@@ -24,6 +24,7 @@ class PostResource extends JsonResource
             'msisdn' => $this->msisdn,
             'status' => $this->status,
             'created_at' => $this->created_at->format('d-m-Y h:i:s'),
+            'deleted_at' => $this->deleted_at,
             'operator' => $this->operator()->get()->transform(fn($user) => [
                 'id' => $user->id,
                 'fullname' => $user->fullname,

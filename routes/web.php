@@ -29,12 +29,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
     Route::get('/posts/edit/{post:id}', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/update/{post:id}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/destroy/{post:id}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::put('/posts/restore/{post:id}', [PostController::class, 'restore'])->name('posts.restore');
     Route::get('/posts/export', [PostController::class, 'export'])->name('posts.export');
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::get('/users/edit/{user:id}', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::put('/users/restore/{user:id}', [UserController::class, 'restore'])->name('users.restore');
     Route::post('/users/role/{user:id}', [UserController::class, 'assignRole'])->name('users.role');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
     Route::post('/users/permission/{user:id}', [UserController::class, 'assignPermission'])->name('users.permission');

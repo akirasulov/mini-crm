@@ -3,6 +3,12 @@
     <AuthenticatedLayout>
         <form @submit.prevent="submit" class="bg-white dark:bg-gray-800">
             <div class="px-4 py-8 lg:py-16">
+                <TrashedMessage
+                    v-if="post.deleted_at"
+                    class="mt-6"
+                    @restore="restore"
+                    >Данныая запись была удалёна.</TrashedMessage
+                >
                 <template v-if="checkpermission.canUpdatePostStatus">
                     <InputLabel for="status" value="Статус" />
                     <select
@@ -127,6 +133,18 @@
                     :loading="form.processing"
                     >Сохранить</PrimaryButton
                 >
+                <DangerButton
+                    class="ms-3"
+                    :class="{
+                        'opacity-25': form.processing,
+                    }"
+                    :disabled="form.processing"
+                    :loading="form.processing"
+                    type="button"
+                    @click="destroy"
+                >
+                    Удалить запись
+                </DangerButton>
             </div>
         </form>
 
@@ -146,7 +164,7 @@
                         <div class="mb-6">
                             <div class="mb-4">
                                 <label for="comment" class="sr-only"
-                                    >Your comment</label
+                                    >Ваш комментарий</label
                                 >
 
                                 <TextArea
@@ -213,11 +231,13 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import TrashedMessage from "@/Shared/TrashedMessage.vue";
 import TextInput from "@/Components/TextInput.vue";
 import TextArea from "@/Components/TextArea.vue";
 import VueMultiselect from "vue-multiselect";
-import { useForm } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
+import { router, useForm } from "@inertiajs/vue3";
 import { UserCircleIcon } from "@heroicons/vue/24/solid";
 import { usePermission } from "@/Composables/permissions";
 const { checkpermission } = usePermission();
@@ -246,6 +266,20 @@ const submit = () => {
     form.patch(route("posts.update", props.post), {
         preserveScroll: true,
     });
+};
+const restore = () => {
+    if (confirm("Вы действительно хотите восстановить запись?")) {
+        router.put(route("posts.restore", props.post));
+    }
+};
+const destroy = () => {
+    if (confirm("Вы действительно хотите удалить запись?")) {
+        router.delete(
+            route("posts.destroy", props.post),
+            {},
+            { preserveScroll: true },
+        );
+    }
 };
 const submitComment = () => {
     commentForm.post(route("comments.store", props.post), {

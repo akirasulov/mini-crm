@@ -353,13 +353,7 @@
                                     :disabled="form.processing"
                                     :loading="form.processing"
                                     type="button"
-                                    @click="
-                                        router.delete(
-                                            route('users.destroy', user.id),
-                                            {},
-                                            { preserveScroll: true },
-                                        )
-                                    "
+                                    @click="destroy"
                                 >
                                     Удалить аккаунт
                                 </DangerButton>
@@ -455,8 +449,18 @@ const closeModal = () => {
     confirmingUserDeletion.value = false;
 };
 const restore = () => {
-    if (confirm("Are you sure you want to restore this user?")) {
-        router.put(`/users/${props.user.id}/restore`);
+    if (confirm("Вы действительно хотите восстановить пользователя?")) {
+        router.put(route("users.restore", props.user));
+    }
+};
+
+const destroy = () => {
+    if (confirm("Вы действительно хотите удалить пользователя?")) {
+        router.delete(
+            route("posts.destroy", props.post),
+            {},
+            { preserveScroll: true },
+        );
     }
 };
 const submit = () => {
