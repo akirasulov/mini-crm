@@ -25,6 +25,11 @@ class Post extends Model
     public const STATUS_PROGRESS = 1; // На реализации
     public const STATUS_DONE = 2; // Готов
 
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where($field ?? 'id', $value)->withTrashed()->firstOrFail();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -73,4 +78,5 @@ class Post extends Model
             }
         });
     }
+
 }

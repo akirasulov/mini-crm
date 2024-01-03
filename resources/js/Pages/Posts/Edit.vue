@@ -5,7 +5,7 @@
             <div class="px-4 py-8 lg:py-16">
                 <TrashedMessage
                     v-if="post.deleted_at && checkpermission.isAdmin"
-                    class="mt-6"
+                    class="mb-6"
                     @restore="restore"
                     >Данныая запись была удалёна.</TrashedMessage
                 >
