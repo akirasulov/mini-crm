@@ -7,10 +7,16 @@
                     v-if="checkpermission.canCreatePost"
                     class="flex justify-end p-2"
                 >
-                    <Link :href="route('posts.create')">
+                    <Link
+                        class="flex items-center rounded-md border border-purple-400 p-1 dark:border-green-400"
+                        :href="route('posts.create')"
+                    >
                         <DocumentPlusIcon
                             class="size-7 text-purple-600 dark:text-green-400"
                         />
+                        <span class="text-purple-600 dark:text-green-400"
+                            >Создать</span
+                        >
                     </Link>
                 </div>
                 <div
@@ -83,6 +89,7 @@
                         class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400"
                     >
                         <tr>
+                            <th scope="col" class="px-6 py-3"></th>
                             <th scope="col" class="px-6 py-3">Лиц. счет</th>
                             <th scope="col" class="px-6 py-3">ФИО</th>
                             <th scope="col" class="px-6 py-3">Статус</th>

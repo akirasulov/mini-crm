@@ -134,6 +134,7 @@
                     >Сохранить</PrimaryButton
                 >
                 <DangerButton
+                    v-if="checkpermission.canDeletePost"
                     class="ms-3"
                     :class="{
                         'opacity-25': form.processing,

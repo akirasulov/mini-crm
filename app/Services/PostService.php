@@ -20,10 +20,17 @@ class PostService
      */
     public function index(Request $request): array
     {
+        auth()->user()->hasPermissionTo('view post')
+        ? true : abort(403, 'Нет доступа');
+
         $posts = Post::with('user', 'operator');
 
-        if (!auth()->user()->hasAnyRole(['admin', 'back-office'])) {
+        if (auth()->user()->hasRole('operator')) {
             $posts = $posts->where('operator_id', auth()->user()->id);
+        }
+
+        if (auth()->user()->hasRole('client')) {
+            $posts = $posts->where('user_id', auth()->user()->id);
         }
 
         return [

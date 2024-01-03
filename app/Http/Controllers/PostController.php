@@ -40,7 +40,7 @@ class PostController extends Controller
     {
         $this->postService->store($request);
 
-        return redirect()->route('posts.index')->with('success', 'Успешно!');
+        return redirect()->route(auth()->user()->hasPermissionTo('view post') ? 'posts.index' : 'index')->with('success', 'Успешно!');
     }
 
     /**
