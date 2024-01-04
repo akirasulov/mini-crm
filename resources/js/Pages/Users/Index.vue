@@ -120,10 +120,8 @@
                     </Link>
                 </li>
             </ul>
-            <div v-if="!users.length" class="flex justify-center py-2">
-                <p class="text-grray-800 dark:text-white">Пока пусто!</p>
-            </div>
-            <Pagination v-else class="py-4" :links="users.links" />
+
+            <Pagination class="py-4" :links="users.links" />
         </div>
     </AuthenticatedLayout>
 </template>

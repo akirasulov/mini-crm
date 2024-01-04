@@ -241,19 +241,8 @@ const STATUS_DONE = 2; // Готов
                                     </tr>
                                 </tbody>
                             </table>
-                            <div
-                                v-if="!posts.data.length"
-                                class="flex justify-center py-2"
-                            >
-                                <p class="text-grray-800 dark:text-white">
-                                    Пока пусто!
-                                </p>
-                            </div>
-                            <Pagination
-                                v-else
-                                class="py-4"
-                                :links="posts.links"
-                            />
+
+                            <Pagination class="py-4" :links="posts.links" />
                         </div>
                     </div>
                 </div>

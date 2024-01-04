@@ -144,9 +144,6 @@
                     </tbody>
                 </table>
             </div>
-            <div v-if="!posts.length" class="flex justify-center py-2">
-                <p class="text-grray-800 dark:text-white">Пока пусто!</p>
-            </div>
             <Pagination class="py-4" :links="posts.links" />
         </div>
     </AuthenticatedLayout>
