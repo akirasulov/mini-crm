@@ -6,6 +6,7 @@ use App\Exports\PostsExport;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
+use App\Jobs\SendEmailQueueJob;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -70,7 +71,7 @@ class PostService
             $query->where('status', Post::STATUS_PROGRESS);
         })->having('posts_count', '<', 3)->get()->random();
 
-        auth()->user()->postsAsClinet()->create([
+        $post = auth()->user()->postsAsClinet()->create([
             'operator_id' => $user->id,
             'title' => $request->title,
             'body' => $request->body,
@@ -80,6 +81,8 @@ class PostService
             'msisdn' => $request->msisdn,
             'status' => Post::STATUS_PROGRESS,
         ]);
+
+        dispatch(new SendEmailQueueJob($user, $post));
     }
 
     /**
