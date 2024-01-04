@@ -36,12 +36,12 @@ class RolesAndPermissionsSeeder extends Seeder
         $client = Role::create(['name' => 'client'])
             ->givePermissionTo(['create post']);
 
-        //Оператор может создавать/изменять обращения и просматривать клиентов
-        $operator = Role::create(['name' => 'operator'])
-            ->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
-
         //Специалист back-office может создавать/изменять обращения и просматривать клиентов
         $back_office = Role::create(['name' => 'back-office'])
+            ->givePermissionTo(['create post', 'update post', 'view post', 'view user', 'leave commemt']);
+
+        //Оператор может создавать/изменять обращения и просматривать клиентов
+        $operator = Role::create(['name' => 'operator'])
             ->givePermissionTo(['create post', 'update post', 'update post status', 'view post', 'delete post', 'create user', 'update user', 'view user', 'delete user', 'leave commemt', 'change responsible']);
 
         //Администратору доступен весъ функционал
@@ -59,25 +59,25 @@ class RolesAndPermissionsSeeder extends Seeder
             $user->save();
         });
 
-        User::factory(20)->create()->each(function ($user) use ($operator) {
-            $user->assignRole($operator);
-            $user->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
+        User::factory(20)->create()->each(function ($user) use ($back_office) {
+            $user->assignRole($back_office);
+            $user->givePermissionTo(['create post', 'update post', 'view post', 'view user', 'leave commemt']);
         });
 
-        User::factory(20)->create()->each(function ($user) use ($operator) {
-            $user->assignRole($operator);
-            $user->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
+        User::factory(20)->create()->each(function ($user) use ($back_office) {
+            $user->assignRole($back_office);
+            $user->givePermissionTo(['create post', 'update post', 'view post', 'view user', 'leave commemt']);
             $user->deleted_at = now();
             $user->save();
         });
 
-        User::factory(10)->create()->each(function ($user) use ($back_office) {
-            $user->assignRole($back_office);
+        User::factory(10)->create()->each(function ($user) use ($operator) {
+            $user->assignRole($operator);
             $user->givePermissionTo(['create post', 'update post', 'update post status', 'view post', 'delete post', 'create user', 'update user', 'view user', 'delete user', 'leave commemt', 'change responsible']);
         });
 
-        User::factory(10)->create()->each(function ($user) use ($back_office) {
-            $user->assignRole($back_office);
+        User::factory(10)->create()->each(function ($user) use ($operator) {
+            $user->assignRole($operator);
             $user->givePermissionTo(['create post', 'update post', 'update post status', 'view post', 'delete post', 'create user', 'update user', 'view user', 'delete user', 'leave commemt', 'change responsible']);
             $user->deleted_at = now();
             $user->save();

@@ -22,8 +22,8 @@ class PostFactory extends Factory
         $user->givePermissionTo(['create post']);
 
         $operator = User::factory()->create();
-        $operator->assignRole('operator');
-        $operator->givePermissionTo(['create post', 'update post', 'view post', 'view user']);
+        $operator->assignRole('back-office');
+        $operator->givePermissionTo(['create post', 'update post', 'view post', 'view user', 'leave commemt']);
         return [
             'uuid' => fake()->uuid(),
             'user_id' => $user,

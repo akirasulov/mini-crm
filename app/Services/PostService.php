@@ -25,7 +25,7 @@ class PostService
 
         $posts = Post::with('user', 'operator');
 
-        if (auth()->user()->hasRole('operator')) {
+        if (auth()->user()->hasRole('back-office')) {
             $posts = $posts->where('operator_id', auth()->user()->id);
         }
 
